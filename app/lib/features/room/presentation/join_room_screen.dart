@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../services/auth/auth_service.dart';
+import '../../../services/auth/auth_service.dart';
 import '../data/room_repository.dart';
 import '../../../shared/components/game_button.dart';
 import '../../../shared/components/page_container.dart';
@@ -45,7 +45,7 @@ class _JoinRoomScreenState extends ConsumerState<JoinRoomScreen> {
       var user = ref.read(authStateProvider).value;
       
       if (user == null) {
-        user = await auth.signInAnonymously();
+        user = (await auth.signInAnonymously()).user;
       }
 
       if (user != null && mounted) {

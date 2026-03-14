@@ -137,3 +137,39 @@
 - **Decision:** Accept that `getDefaultPackId()` resolves to `couples` with the four launch pack IDs and document this without a code change.
 - **Context:** `getDefaultPackId()` uses `.collection('questionPacks').limit(1).get()` with no `orderBy`. Firestore returns documents in lexicographic document-ID order when no order is specified. With IDs `couples`, `embarrassing`, `friends`, `majlis`, the first document returned is `couples`.
 - **Resolution:** Hosts actively select a pack via the lobby picker in all normal gameplay flows. The `getDefaultPackId()` fallback is only triggered if a session is started with `selectedPackProvider == null` (e.g. Firestore is empty or the host never interacted with the picker). `couples` as the default is semantically acceptable. No code change required.
+
+## Invalid Route `/lobby` Fixed to `/home` (Mission 14)
+
+- **Decision:** Replace `context.go('/lobby')` with `context.go('/home')` in `lobby_screen.dart`.
+- **Context:** Two locations in `LobbyScreen` called `context.go('/lobby')` — in `_handleLeave()` and in `_RoomEndedView.build()`. The route `/lobby` was never defined in `app_router.dart`. GoRouter throws a runtime exception on any `go()` to an undefined route, causing a crash whenever a player leaves a room or a room ends unexpectedly.
+- **Resolution:** Both occurrences replaced with `context.go('/home')`, which is the correct navigation target for returning to the home screen.
+
+## Missing `dart:math` Import Added to `gameplay_screen.dart` (Mission 14)
+
+- **Decision:** Add `import 'dart:math' as math;` to `gameplay_screen.dart`.
+- **Context:** `math.min()`, `math.pi`, `math.cos()`, and `math.sin()` are used in `_buildFlipTransition()` and `_ConfettiBurst` but the `dart:math` library was never imported. This is a compile error that prevents the app from building.
+- **Resolution:** Import added as the second import line in the file, immediately after `import 'dart:async';`.
+
+## Missing `_buildPreparingState()` Signature Restored (Mission 14)
+
+- **Decision:** Add the missing method signature `Widget _buildPreparingState(String label) {` before the orphaned method body in `gameplay_screen.dart`.
+- **Context:** `_buildPreparingState(round.phase)` is called at line 189 to render the spinner shown during `preparing` and `vote_locked` round phases. The method body (returning an `Expanded` spinner widget) existed in the class but was missing its function signature — making it orphaned code where `label` was undefined. This is a compile error.
+- **Resolution:** The method signature was prepended to the orphaned body, restoring the complete method definition. No logic change — the existing body was correct.
+
+## iOS Firebase Options Added Manually (Mission 15)
+
+- **Decision:** Add the iOS `FirebaseOptions` constant to `firebase_options.dart` by reading values from `ios/Runner/GoogleService-Info.plist`, rather than re-running the FlutterFire CLI.
+- **Context:** The FlutterFire CLI generated `firebase_options.dart` with an iOS case that throws `UnsupportedError` — indicating iOS was not registered during the initial CLI run. `GoogleService-Info.plist` existed with correct values (GOOGLE_APP_ID, API_KEY, BUNDLE_ID, PROJECT_ID). Re-running the CLI would require Firebase CLI authentication in CI and would overwrite the file. A targeted code edit is simpler and auditable.
+- **Resolution:** Added `static const FirebaseOptions ios = FirebaseOptions(...)` and replaced the iOS `throw` with `return ios;`. Values sourced directly from `GoogleService-Info.plist`. No other changes to the file.
+
+## Android Release Signing via key.properties (Mission 15)
+
+- **Decision:** Configure `build.gradle.kts` to read the Android release keystore from `app/key.properties`, falling back to debug signing if the file is absent.
+- **Context:** The default Flutter release build config uses debug signing (with a TODO comment). Debug-signed APKs cannot be published to the Play Store. A `key.properties` file pattern decouples keystore credentials from the build script and keeps secrets out of version control.
+- **Resolution:** Added `signingConfigs { create("release") { ... } }` block guarded by `keyPropertiesFile.exists()`. Release build type uses the release config if the file is present, debug config otherwise. `key.properties` and `release.keystore` must be added to `.gitignore` and created by the operator.
+
+## Root firebase.json Created for Deployment (Mission 15)
+
+- **Decision:** Create `firebase.json` at the project root (not inside `app/`) to enable `firebase deploy`.
+- **Context:** `app/firebase.json` is the FlutterFire CLI config (Flutter-specific platform/app registration). It is not a valid Firebase deployment manifest. `firebase deploy` requires a root-level `firebase.json` that declares which Firebase services to deploy and where their config files are. Without it, `firebase deploy` would fail with "No Firebase project found."
+- **Resolution:** Created `firebase.json` at project root with `functions`, `firestore`, and `database` targets. Created `.firebaserc` pointing to `meen-al-theeb-flutter`. Created `firestore.indexes.json` (empty indexes array) as required by the Firestore target.

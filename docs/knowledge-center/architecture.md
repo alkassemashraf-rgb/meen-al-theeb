@@ -307,4 +307,6 @@ Post-launch expansion target: 150+ per pack (600+ total) for heavy-user retentio
 9. **Mission 10 (Authority Hardening):** Cloud Function for result computation, RTDB rules correction.
 10. **Mission 12 (Multiplayer Stress Testing):** Validation across all six scenarios, three targeted fixes.
 11. **Mission 13 (Content Seeding):** 260 launch questions across 4 packs, seed script, content readiness report.
-12. **Mission 14+ (Polish):** Audio, micro-animations, server-side timer, leaderboards, monetization.
+12. **Mission 14 (Stability & Bug Fix Pass):** Full static analysis, 4 bugs fixed (2 compile errors, 1 runtime crash, 1 silent failure), stability validation across all screens and services.
+13. **Mission 15 (First Release Build Preparation):** iOS Firebase options, Android release signing config, app label, root firebase.json/.firebaserc, unused import removed. App ready to produce a release build.
+14. **Mission 16+ (Polish):** Audio, micro-animations, server-side timer, leaderboards, monetization.

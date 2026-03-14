@@ -5,7 +5,7 @@ part 'game_round.freezed.dart';
 part 'game_round.g.dart';
 
 @freezed
-class GameRound with _$GameRound {
+abstract class GameRound with _$GameRound {
   const factory GameRound({
     required String roundId,
     required String questionId,

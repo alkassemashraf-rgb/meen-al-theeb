@@ -4,7 +4,7 @@ part 'game_session.freezed.dart';
 part 'game_session.g.dart';
 
 @freezed
-class GameSession with _$GameSession {
+abstract class GameSession with _$GameSession {
   const factory GameSession({
     required String sessionId,
     required String packId,

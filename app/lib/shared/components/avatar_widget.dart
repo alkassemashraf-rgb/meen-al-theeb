@@ -82,7 +82,7 @@ class AvatarWidget extends StatelessWidget {
                   child: TweenAnimationBuilder<double>(
                     tween: Tween(begin: 0.0, end: 1.0),
                     duration: const Duration(milliseconds: 700),
-                    curve: Curves.backOut,
+                    curve: Curves.easeOutBack,
                     builder: (context, value, child) {
                       return Transform.translate(
                         offset: Offset(0, (1 - value) * -20),
@@ -122,7 +122,8 @@ class AvatarWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ),
+   );
   }
 
   Widget _getEmotionOverlay(String emotion, double baseSize) {

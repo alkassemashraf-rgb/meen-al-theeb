@@ -4,7 +4,7 @@ part 'round_result.freezed.dart';
 part 'round_result.g.dart';
 
 @freezed
-class RoundResult with _$RoundResult {
+abstract class RoundResult with _$RoundResult {
   const factory RoundResult({
     required List<String> winningPlayerIds,
     required Map<String, int> voteCounts, // playerId -> count

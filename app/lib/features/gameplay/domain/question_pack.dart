@@ -4,7 +4,7 @@ part 'question_pack.freezed.dart';
 part 'question_pack.g.dart';
 
 @freezed
-class QuestionPack with _$QuestionPack {
+abstract class QuestionPack with _$QuestionPack {
   const factory QuestionPack({
     required String packId,
     required String name,

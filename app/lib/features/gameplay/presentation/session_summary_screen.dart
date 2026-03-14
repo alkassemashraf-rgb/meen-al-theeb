@@ -93,7 +93,10 @@ class _SummaryContent extends StatelessWidget {
                 ],
                 const SizedBox(height: 24),
                 if (!summary.hasAnyRounds) ...[
-                  _EmptyState(onHome: null),
+                  const EmptyState(
+                    title: 'لا توجد جولات',
+                    message: 'يبدو أن هذه الجلسة لم تكتمل بعد.',
+                  ),
                 ] else ...[
                   const Text(
                     'الجولات',

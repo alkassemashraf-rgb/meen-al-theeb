@@ -40,7 +40,7 @@ class _AnimatedReactionState extends State<AnimatedReaction>
 
     _scale = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween(begin: 0.5, end: 1.2).setCurve(Curves.backOut), 
+        tween: Tween(begin: 0.5, end: 1.2).chain(CurveTween(curve: Curves.easeOutBack)), 
         weight: 30,
       ),
       TweenSequenceItem(tween: ConstantTween(1.2), weight: 70),

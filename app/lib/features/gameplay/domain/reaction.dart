@@ -4,7 +4,7 @@ part 'reaction.freezed.dart';
 part 'reaction.g.dart';
 
 @freezed
-class Reaction with _$Reaction {
+abstract class Reaction with _$Reaction {
   const factory Reaction({
     required String id,
     required String playerId,

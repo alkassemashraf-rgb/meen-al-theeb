@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -252,6 +253,7 @@ class _GameplayScreenState extends ConsumerState<GameplayScreen> {
   // Preparing / Locking states
   // -------------------------------------------------------------------------
 
+  Widget _buildPreparingState(String label) {
     return Expanded(
       child: Center(
         child: Column(
@@ -316,52 +318,51 @@ class _GameplayScreenState extends ConsumerState<GameplayScreen> {
   }) {
     return Column(
       key: key,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  '$_secondsLeft ثانية',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.redAccent,
-                  ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                '$_secondsLeft ثانية',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.redAccent,
                 ),
-                Text(
-                  'الأصوات: ${round.votes.length}/${round.eligiblePlayerIds.length}',
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ],
-            ),
+              ),
+              Text(
+                'الأصوات: ${round.votes.length}/${round.eligiblePlayerIds.length}',
+                style: const TextStyle(fontSize: 18),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: RoundedCard(
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                child: Text(
-                  round.questionAr,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: RoundedCard(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              child: Text(
+                round.questionAr,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          const Text(
-            'صوّت للشخص المناسب:',
-            style: TextStyle(fontSize: 18, color: Colors.grey),
-          ),
-          Expanded(child: _buildVotingGrid(round, roomAsync, user)),
-        ],
-      ),
+        ),
+        const SizedBox(height: 16),
+        const Text(
+          'صوّت للشخص المناسب:',
+          style: TextStyle(fontSize: 18, color: Colors.grey),
+        ),
+        Expanded(child: _buildVotingGrid(round, roomAsync, user)),
+      ],
     );
   }
 

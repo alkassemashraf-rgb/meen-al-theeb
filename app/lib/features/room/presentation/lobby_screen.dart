@@ -40,9 +40,17 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   }
 
   Future<void> _handleLeave(String playerId) async {
-    await ref.read(roomRepositoryProvider).leaveRoom(widget.roomId, playerId);
-    if (mounted) {
-      context.go('/lobby');
+    try {
+      await ref.read(roomRepositoryProvider).leaveRoom(widget.roomId, playerId);
+      if (mounted) {
+        context.go('/home');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('خطأ في المغادرة: $e')),
+        );
+      }
     }
   }
 
@@ -425,7 +433,7 @@ class _RoomEndedView extends StatelessWidget {
           const SizedBox(height: 24),
           GameButton(
             text: 'العودة للرئيسية',
-            onPressed: () => context.go('/lobby'),
+            onPressed: () => context.go('/home'),
           ),
         ],
       ),

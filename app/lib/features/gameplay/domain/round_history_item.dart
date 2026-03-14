@@ -9,7 +9,7 @@ part 'round_history_item.g.dart';
 /// Storage: RTDB /rooms/{roomId}/roundHistory/{roundId}
 /// Written by: GameSessionController when the host triggers the next round.
 @freezed
-class RoundHistoryItem with _$RoundHistoryItem {
+abstract class RoundHistoryItem with _$RoundHistoryItem {
   const factory RoundHistoryItem({
     required String roundId,
     required String questionId,

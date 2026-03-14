@@ -4,7 +4,7 @@ part 'presence_state.freezed.dart';
 part 'presence_state.g.dart';
 
 @freezed
-class PresenceState with _$PresenceState {
+abstract class PresenceState with _$PresenceState {
   const factory PresenceState({
     required bool isPresent,
     @Default(null) DateTime? lastActiveAt,

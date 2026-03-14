@@ -15,8 +15,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$GameRound {
 
- String get roundId; String get questionId; String get questionAr; String get questionEn; String get phase;// preparing | voting | locked | reveal
- DateTime get startedAt; DateTime get expiresAt; List<String> get eligiblePlayerIds; Map<String, String> get votes;
+ String get roundId; String get questionId; String get questionAr; String get questionEn; String get phase;// preparing | voting | vote_locked | result_ready
+ DateTime get startedAt; DateTime get expiresAt; List<String> get eligiblePlayerIds; Map<String, String> get votes;// VoterId -> TargetPlayerId
+ RoundResult? get result;
 /// Create a copy of GameRound
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +30,16 @@ $GameRoundCopyWith<GameRound> get copyWith => _$GameRoundCopyWithImpl<GameRound>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameRound&&(identical(other.roundId, roundId) || other.roundId == roundId)&&(identical(other.questionId, questionId) || other.questionId == questionId)&&(identical(other.questionAr, questionAr) || other.questionAr == questionAr)&&(identical(other.questionEn, questionEn) || other.questionEn == questionEn)&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&const DeepCollectionEquality().equals(other.eligiblePlayerIds, eligiblePlayerIds)&&const DeepCollectionEquality().equals(other.votes, votes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameRound&&(identical(other.roundId, roundId) || other.roundId == roundId)&&(identical(other.questionId, questionId) || other.questionId == questionId)&&(identical(other.questionAr, questionAr) || other.questionAr == questionAr)&&(identical(other.questionEn, questionEn) || other.questionEn == questionEn)&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&const DeepCollectionEquality().equals(other.eligiblePlayerIds, eligiblePlayerIds)&&const DeepCollectionEquality().equals(other.votes, votes)&&(identical(other.result, result) || other.result == result));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,roundId,questionId,questionAr,questionEn,phase,startedAt,expiresAt,const DeepCollectionEquality().hash(eligiblePlayerIds),const DeepCollectionEquality().hash(votes));
+int get hashCode => Object.hash(runtimeType,roundId,questionId,questionAr,questionEn,phase,startedAt,expiresAt,const DeepCollectionEquality().hash(eligiblePlayerIds),const DeepCollectionEquality().hash(votes),result);
 
 @override
 String toString() {
-  return 'GameRound(roundId: $roundId, questionId: $questionId, questionAr: $questionAr, questionEn: $questionEn, phase: $phase, startedAt: $startedAt, expiresAt: $expiresAt, eligiblePlayerIds: $eligiblePlayerIds, votes: $votes)';
+  return 'GameRound(roundId: $roundId, questionId: $questionId, questionAr: $questionAr, questionEn: $questionEn, phase: $phase, startedAt: $startedAt, expiresAt: $expiresAt, eligiblePlayerIds: $eligiblePlayerIds, votes: $votes, result: $result)';
 }
 
 
@@ -49,11 +50,11 @@ abstract mixin class $GameRoundCopyWith<$Res>  {
   factory $GameRoundCopyWith(GameRound value, $Res Function(GameRound) _then) = _$GameRoundCopyWithImpl;
 @useResult
 $Res call({
- String roundId, String questionId, String questionAr, String questionEn, String phase, DateTime startedAt, DateTime expiresAt, List<String> eligiblePlayerIds, Map<String, String> votes
+ String roundId, String questionId, String questionAr, String questionEn, String phase, DateTime startedAt, DateTime expiresAt, List<String> eligiblePlayerIds, Map<String, String> votes, RoundResult? result
 });
 
 
-
+$RoundResultCopyWith<$Res>? get result;
 
 }
 /// @nodoc
@@ -66,7 +67,7 @@ class _$GameRoundCopyWithImpl<$Res>
 
 /// Create a copy of GameRound
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? roundId = null,Object? questionId = null,Object? questionAr = null,Object? questionEn = null,Object? phase = null,Object? startedAt = null,Object? expiresAt = null,Object? eligiblePlayerIds = null,Object? votes = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? roundId = null,Object? questionId = null,Object? questionAr = null,Object? questionEn = null,Object? phase = null,Object? startedAt = null,Object? expiresAt = null,Object? eligiblePlayerIds = null,Object? votes = null,Object? result = freezed,}) {
   return _then(_self.copyWith(
 roundId: null == roundId ? _self.roundId : roundId // ignore: cast_nullable_to_non_nullable
 as String,questionId: null == questionId ? _self.questionId : questionId // ignore: cast_nullable_to_non_nullable
@@ -77,10 +78,23 @@ as String,startedAt: null == startedAt ? _self.startedAt : startedAt // ignore: 
 as DateTime,expiresAt: null == expiresAt ? _self.expiresAt : expiresAt // ignore: cast_nullable_to_non_nullable
 as DateTime,eligiblePlayerIds: null == eligiblePlayerIds ? _self.eligiblePlayerIds : eligiblePlayerIds // ignore: cast_nullable_to_non_nullable
 as List<String>,votes: null == votes ? _self.votes : votes // ignore: cast_nullable_to_non_nullable
-as Map<String, String>,
+as Map<String, String>,result: freezed == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
+as RoundResult?,
   ));
 }
+/// Create a copy of GameRound
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RoundResultCopyWith<$Res>? get result {
+    if (_self.result == null) {
+    return null;
+  }
 
+  return $RoundResultCopyWith<$Res>(_self.result!, (value) {
+    return _then(_self.copyWith(result: value));
+  });
+}
 }
 
 
@@ -162,10 +176,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String roundId,  String questionId,  String questionAr,  String questionEn,  String phase,  DateTime startedAt,  DateTime expiresAt,  List<String> eligiblePlayerIds,  Map<String, String> votes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String roundId,  String questionId,  String questionAr,  String questionEn,  String phase,  DateTime startedAt,  DateTime expiresAt,  List<String> eligiblePlayerIds,  Map<String, String> votes,  RoundResult? result)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GameRound() when $default != null:
-return $default(_that.roundId,_that.questionId,_that.questionAr,_that.questionEn,_that.phase,_that.startedAt,_that.expiresAt,_that.eligiblePlayerIds,_that.votes);case _:
+return $default(_that.roundId,_that.questionId,_that.questionAr,_that.questionEn,_that.phase,_that.startedAt,_that.expiresAt,_that.eligiblePlayerIds,_that.votes,_that.result);case _:
   return orElse();
 
 }
@@ -183,10 +197,10 @@ return $default(_that.roundId,_that.questionId,_that.questionAr,_that.questionEn
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String roundId,  String questionId,  String questionAr,  String questionEn,  String phase,  DateTime startedAt,  DateTime expiresAt,  List<String> eligiblePlayerIds,  Map<String, String> votes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String roundId,  String questionId,  String questionAr,  String questionEn,  String phase,  DateTime startedAt,  DateTime expiresAt,  List<String> eligiblePlayerIds,  Map<String, String> votes,  RoundResult? result)  $default,) {final _that = this;
 switch (_that) {
 case _GameRound():
-return $default(_that.roundId,_that.questionId,_that.questionAr,_that.questionEn,_that.phase,_that.startedAt,_that.expiresAt,_that.eligiblePlayerIds,_that.votes);case _:
+return $default(_that.roundId,_that.questionId,_that.questionAr,_that.questionEn,_that.phase,_that.startedAt,_that.expiresAt,_that.eligiblePlayerIds,_that.votes,_that.result);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +217,10 @@ return $default(_that.roundId,_that.questionId,_that.questionAr,_that.questionEn
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String roundId,  String questionId,  String questionAr,  String questionEn,  String phase,  DateTime startedAt,  DateTime expiresAt,  List<String> eligiblePlayerIds,  Map<String, String> votes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String roundId,  String questionId,  String questionAr,  String questionEn,  String phase,  DateTime startedAt,  DateTime expiresAt,  List<String> eligiblePlayerIds,  Map<String, String> votes,  RoundResult? result)?  $default,) {final _that = this;
 switch (_that) {
 case _GameRound() when $default != null:
-return $default(_that.roundId,_that.questionId,_that.questionAr,_that.questionEn,_that.phase,_that.startedAt,_that.expiresAt,_that.eligiblePlayerIds,_that.votes);case _:
+return $default(_that.roundId,_that.questionId,_that.questionAr,_that.questionEn,_that.phase,_that.startedAt,_that.expiresAt,_that.eligiblePlayerIds,_that.votes,_that.result);case _:
   return null;
 
 }
@@ -218,7 +232,7 @@ return $default(_that.roundId,_that.questionId,_that.questionAr,_that.questionEn
 @JsonSerializable()
 
 class _GameRound implements GameRound {
-  const _GameRound({required this.roundId, required this.questionId, required this.questionAr, required this.questionEn, required this.phase, required this.startedAt, required this.expiresAt, final  List<String> eligiblePlayerIds = const [], final  Map<String, String> votes = const {}}): _eligiblePlayerIds = eligiblePlayerIds,_votes = votes;
+  const _GameRound({required this.roundId, required this.questionId, required this.questionAr, required this.questionEn, required this.phase, required this.startedAt, required this.expiresAt, final  List<String> eligiblePlayerIds = const [], final  Map<String, String> votes = const {}, this.result}): _eligiblePlayerIds = eligiblePlayerIds,_votes = votes;
   factory _GameRound.fromJson(Map<String, dynamic> json) => _$GameRoundFromJson(json);
 
 @override final  String roundId;
@@ -226,7 +240,7 @@ class _GameRound implements GameRound {
 @override final  String questionAr;
 @override final  String questionEn;
 @override final  String phase;
-// preparing | voting | locked | reveal
+// preparing | voting | vote_locked | result_ready
 @override final  DateTime startedAt;
 @override final  DateTime expiresAt;
  final  List<String> _eligiblePlayerIds;
@@ -243,6 +257,8 @@ class _GameRound implements GameRound {
   return EqualUnmodifiableMapView(_votes);
 }
 
+// VoterId -> TargetPlayerId
+@override final  RoundResult? result;
 
 /// Create a copy of GameRound
 /// with the given fields replaced by the non-null parameter values.
@@ -257,16 +273,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameRound&&(identical(other.roundId, roundId) || other.roundId == roundId)&&(identical(other.questionId, questionId) || other.questionId == questionId)&&(identical(other.questionAr, questionAr) || other.questionAr == questionAr)&&(identical(other.questionEn, questionEn) || other.questionEn == questionEn)&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&const DeepCollectionEquality().equals(other._eligiblePlayerIds, _eligiblePlayerIds)&&const DeepCollectionEquality().equals(other._votes, _votes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameRound&&(identical(other.roundId, roundId) || other.roundId == roundId)&&(identical(other.questionId, questionId) || other.questionId == questionId)&&(identical(other.questionAr, questionAr) || other.questionAr == questionAr)&&(identical(other.questionEn, questionEn) || other.questionEn == questionEn)&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&const DeepCollectionEquality().equals(other._eligiblePlayerIds, _eligiblePlayerIds)&&const DeepCollectionEquality().equals(other._votes, _votes)&&(identical(other.result, result) || other.result == result));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,roundId,questionId,questionAr,questionEn,phase,startedAt,expiresAt,const DeepCollectionEquality().hash(_eligiblePlayerIds),const DeepCollectionEquality().hash(_votes));
+int get hashCode => Object.hash(runtimeType,roundId,questionId,questionAr,questionEn,phase,startedAt,expiresAt,const DeepCollectionEquality().hash(_eligiblePlayerIds),const DeepCollectionEquality().hash(_votes),result);
 
 @override
 String toString() {
-  return 'GameRound(roundId: $roundId, questionId: $questionId, questionAr: $questionAr, questionEn: $questionEn, phase: $phase, startedAt: $startedAt, expiresAt: $expiresAt, eligiblePlayerIds: $eligiblePlayerIds, votes: $votes)';
+  return 'GameRound(roundId: $roundId, questionId: $questionId, questionAr: $questionAr, questionEn: $questionEn, phase: $phase, startedAt: $startedAt, expiresAt: $expiresAt, eligiblePlayerIds: $eligiblePlayerIds, votes: $votes, result: $result)';
 }
 
 
@@ -277,11 +293,11 @@ abstract mixin class _$GameRoundCopyWith<$Res> implements $GameRoundCopyWith<$Re
   factory _$GameRoundCopyWith(_GameRound value, $Res Function(_GameRound) _then) = __$GameRoundCopyWithImpl;
 @override @useResult
 $Res call({
- String roundId, String questionId, String questionAr, String questionEn, String phase, DateTime startedAt, DateTime expiresAt, List<String> eligiblePlayerIds, Map<String, String> votes
+ String roundId, String questionId, String questionAr, String questionEn, String phase, DateTime startedAt, DateTime expiresAt, List<String> eligiblePlayerIds, Map<String, String> votes, RoundResult? result
 });
 
 
-
+@override $RoundResultCopyWith<$Res>? get result;
 
 }
 /// @nodoc
@@ -294,7 +310,7 @@ class __$GameRoundCopyWithImpl<$Res>
 
 /// Create a copy of GameRound
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? roundId = null,Object? questionId = null,Object? questionAr = null,Object? questionEn = null,Object? phase = null,Object? startedAt = null,Object? expiresAt = null,Object? eligiblePlayerIds = null,Object? votes = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? roundId = null,Object? questionId = null,Object? questionAr = null,Object? questionEn = null,Object? phase = null,Object? startedAt = null,Object? expiresAt = null,Object? eligiblePlayerIds = null,Object? votes = null,Object? result = freezed,}) {
   return _then(_GameRound(
 roundId: null == roundId ? _self.roundId : roundId // ignore: cast_nullable_to_non_nullable
 as String,questionId: null == questionId ? _self.questionId : questionId // ignore: cast_nullable_to_non_nullable
@@ -305,11 +321,24 @@ as String,startedAt: null == startedAt ? _self.startedAt : startedAt // ignore: 
 as DateTime,expiresAt: null == expiresAt ? _self.expiresAt : expiresAt // ignore: cast_nullable_to_non_nullable
 as DateTime,eligiblePlayerIds: null == eligiblePlayerIds ? _self._eligiblePlayerIds : eligiblePlayerIds // ignore: cast_nullable_to_non_nullable
 as List<String>,votes: null == votes ? _self._votes : votes // ignore: cast_nullable_to_non_nullable
-as Map<String, String>,
+as Map<String, String>,result: freezed == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
+as RoundResult?,
   ));
 }
 
+/// Create a copy of GameRound
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RoundResultCopyWith<$Res>? get result {
+    if (_self.result == null) {
+    return null;
+  }
 
+  return $RoundResultCopyWith<$Res>(_self.result!, (value) {
+    return _then(_self.copyWith(result: value));
+  });
+}
 }
 
 // dart format on
