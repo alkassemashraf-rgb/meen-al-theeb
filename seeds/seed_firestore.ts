@@ -20,8 +20,10 @@
  * Idempotent: running twice will overwrite with the same data (no duplicates).
  */
 
-import { initializeApp, credential } from 'firebase-admin';
+import { initializeApp } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import admin from 'firebase-admin';
+const { credential } = admin;
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
