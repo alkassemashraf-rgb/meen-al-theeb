@@ -20,19 +20,24 @@
  * Idempotent: running twice will overwrite with the same data (no duplicates).
  */
 
-import * as admin from 'firebase-admin';
+import { initializeApp, credential } from 'firebase-admin';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // ---------------------------------------------------------------------------
 // Firebase init
 // ---------------------------------------------------------------------------
 
-admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
+initializeApp({
+  credential: credential.applicationDefault(),
 });
 
-const db = admin.firestore();
+const db = getFirestore();
 
 // ---------------------------------------------------------------------------
 // Types
@@ -108,7 +113,7 @@ async function seedPacks(): Promise<void> {
       id,
       data: {
         ...data,
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        createdAt: FieldValue.serverTimestamp(),
       },
     };
   });

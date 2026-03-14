@@ -1,0 +1,16 @@
+{
+  "name": "meen-al-theeb-tools",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "firebase-admin": "^13.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "seed": "node --loader ts-node/esm seeds/seed_firestore.ts"
+  }
+}
