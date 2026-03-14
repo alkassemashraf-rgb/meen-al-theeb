@@ -1,0 +1,9 @@
+{
+  "@@locale": "ar",
+  "appName": "مين الذيب؟",
+  "@appName": {
+    "description": "The name of the application"
+  },
+  "joinRoom": "انضمام للغرفة",
+  "createRoom": "إنشاء غرفة"
+}

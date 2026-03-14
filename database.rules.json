@@ -1,0 +1,45 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "room_codes": {
+      "$code": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+
+    "rooms": {
+      "$roomId": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+
+        "status": {
+          ".write": "auth != null && auth.uid == data.parent().child('hostId').val()"
+        },
+
+        "hostId": {
+          ".write": "!data.exists() || (auth != null && auth.uid == data.val())"
+        },
+
+        "currentRound": {
+          "result": {
+            ".write": false
+          },
+          "votes": {
+            "$voterId": {
+              ".write": "auth != null && auth.uid == $voterId"
+            }
+          }
+        },
+
+        "players": {
+          "$playerId": {
+            ".write": "auth != null && auth.uid == $playerId"
+          }
+        }
+      }
+    }
+  }
+}

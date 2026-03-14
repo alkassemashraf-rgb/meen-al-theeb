@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Base rule: Deny all by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Question Packs (Static game content)
+    // - Anyone can read
+    // - Only Admin/System can write
+    match /questionPacks/{packId} {
+      allow read: if true;
+      allow write: if false; // System/Admin only
+    }
+
+    // Questions (Static game content inside packs)
+    match /questions/{questionId} {
+      allow read: if true;
+      allow write: if false; // System/Admin only
+    }
+
+    // User Profiles (Optional expansion)
+    // - Users can read their own profile
+    // - Users can update their own profile
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false; 
+    }
+
+    // Game History / Archival (Future)
+    // - Authenticated users can read games they participated in
+    // - Only Cloud Functions can write final results
+    match /gameHistory/{gameId} {
+      allow read: if request.auth != null; // Refine once player arrays are in documents
+      allow write: if false; // Cloud Functions only
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "785530125855",
+    "project_id": "meen-al-theeb-flutter",
+    "storage_bucket": "meen-al-theeb-flutter.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785530125855:android:91377792234d6b89a4df2a",
+        "android_client_info": {
+          "package_name": "com.rgb.meenaltheeb.meen_al_theeb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAz2AufIl1lpO4ptoiyvYzmNRuOPP7iU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

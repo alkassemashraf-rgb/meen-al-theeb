@@ -1,0 +1,38 @@
+[
+  {
+    "id": "friends",
+    "name": "أصدقاء",
+    "description": "أسئلة خفيفة ومرحة مناسبة لأي مجموعة أصدقاء",
+    "language": "ar",
+    "questionCount": 80,
+    "icon": "👫",
+    "isPremium": false
+  },
+  {
+    "id": "embarrassing",
+    "name": "محرج",
+    "description": "أسئلة جريئة ومحرجة لمن يجرؤ على الإجابة",
+    "language": "ar",
+    "questionCount": 60,
+    "icon": "😬",
+    "isPremium": false
+  },
+  {
+    "id": "majlis",
+    "name": "جلسة",
+    "description": "أسئلة ثقافية واجتماعية بنكهة خليجية أصيلة",
+    "language": "ar",
+    "questionCount": 70,
+    "icon": "🪑",
+    "isPremium": false
+  },
+  {
+    "id": "couples",
+    "name": "للأزواج",
+    "description": "أسئلة رومانسية وخفيفة مخصصة للأزواج والمقربين",
+    "language": "ar",
+    "questionCount": 50,
+    "icon": "💕",
+    "isPremium": false
+  }
+]
