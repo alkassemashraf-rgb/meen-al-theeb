@@ -62,6 +62,7 @@ class DefaultFirebaseOptions {
     projectId: 'meen-al-theeb-flutter',
     storageBucket: 'meen-al-theeb-flutter.firebasestorage.app',
     iosBundleId: 'com.rgb.meenaltheeb.meenAlTheeb',
+    databaseURL: 'https://meen-al-theeb-flutter-default-rtdb.firebaseio.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -70,5 +71,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '785530125855',
     projectId: 'meen-al-theeb-flutter',
     storageBucket: 'meen-al-theeb-flutter.firebasestorage.app',
+    databaseURL: 'https://meen-al-theeb-flutter-default-rtdb.firebaseio.com',
   );
 }

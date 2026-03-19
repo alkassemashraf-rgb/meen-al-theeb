@@ -25,6 +25,16 @@ class PlaceholderScreen extends StatelessWidget {
 
 final appRouter = GoRouter(
   initialLocation: '/home',
+  errorBuilder: (context, state) => Scaffold(
+    backgroundColor: const Color(0xFF1A1330),
+    body: Center(
+      child: Text(
+        'Navigation error:\n${state.error}',
+        style: const TextStyle(color: Colors.white, fontSize: 14),
+        textAlign: TextAlign.center,
+      ),
+    ),
+  ),
   routes: [
     GoRoute(
       path: '/test-backend',

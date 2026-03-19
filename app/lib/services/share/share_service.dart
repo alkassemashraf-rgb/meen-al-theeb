@@ -39,6 +39,7 @@ class ShareService {
     double pixelRatio = 3.0,
     String shareText = 'من الذيب في مجموعتنا؟ 🐺 #مين_الذيب',
     String fileName = 'meen_al_theeb_result.png',
+    Rect? sharePositionOrigin,
   }) async {
     // Allow one extra frame for any pending paint to complete
     await Future.delayed(const Duration(milliseconds: 20));
@@ -69,6 +70,7 @@ class ShareService {
     await Share.shareXFiles(
       [XFile(file.path, mimeType: 'image/png', name: fileName)],
       text: shareText,
+      sharePositionOrigin: sharePositionOrigin,
     );
   }
 

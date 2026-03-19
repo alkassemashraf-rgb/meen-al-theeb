@@ -1,0 +1,17 @@
+[
+  { "id": "q_funny_chaos_001", "packId": "funny_chaos", "textAr": "لا تلفّون… فيه واحد في الجلسة كل ما يفتح الثلاجة يتصرف وكأن فيه مهمة خطيرة تنتظره جوّا", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_002", "packId": "funny_chaos", "textAr": "فيه واحد واضح… توديعه لك من الغرفة المجاورة فيه من الإحساس أكثر من توديع المطار", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_003", "packId": "funny_chaos", "textAr": "لا تلفّون… فيه واحد لما يوزع الأكل يتعامل مع الصحون وكأنها عملية إنزال جوية تحت الضغط", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_004", "packId": "funny_chaos", "textAr": "فيه واحد واضح… لو انقطع الضوء فجأة ردة فعله تسبق أي تفكير وتصير هي الجلسة كلها", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_005", "packId": "funny_chaos", "textAr": "لا تلفّون… فيه واحد يحكي قصة عادية من يومه بإيقاع وتفاصيل وكأن فيه مخرج ينتظر يصوّرها", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_006", "packId": "funny_chaos", "textAr": "فيه واحد واضح… يدخل المطبخ ويطلع وكأنه أنجز مهمة ما كان أحد يجرؤ عليها وهو فقط جاب كوب ماي", "textEn": "", "status": "disabled", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_007", "packId": "funny_chaos", "textAr": "لا تلفّون… فيه واحد لو حكى نكتة وما ضحك أحد يشرحها بثقة مضاعفة حتى ترجع مضحكة من باب ثاني", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_008", "packId": "funny_chaos", "textAr": "فيه واحد واضح… يأكل بتركيز وأسلوب وكأنه يمثل بلده في بطولة أكل رسمية ولو الأكل فستق", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_009", "packId": "funny_chaos", "textAr": "لا تلفّون… فيه واحد يروي حدث عادي من يومه ويضيف له ضغط وتقلبات وكأن فيه وثائقي يصوره من الداخل", "textEn": "", "status": "disabled", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_010", "packId": "funny_chaos", "textAr": "فيه واحد واضح… كل جلسة يدخلها يدخل وكأنه الضيف المنتظر الذي أخيراً وصل ويكمل المشهد", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_011", "packId": "funny_chaos", "textAr": "لا تلفّون… فيه واحد يمشي بإيقاع وكأن كل خطوة يخطوها مصورة بعدسة سينمائية وسلو موشن مقصود", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_012", "packId": "funny_chaos", "textAr": "فيه واحد واضح… يصحح نطق كلمة عند الثاني بجدية كاملة وهو لو حكمت على نطقه ما أفضل بكثير", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_013", "packId": "funny_chaos", "textAr": "لا تلفّون… فيه واحد يبرر أي قرار مجنون اتخذه بسلسلة منطق تقنعك في اللحظة وبعدها تتساءل كيف", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_014", "packId": "funny_chaos", "textAr": "فيه واحد واضح… لو لعب أي لعبة بسيطة وجهه يتحول وكأن النتيجة مرتبطة بشيء أكبر منه بكثير", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" },
+  { "id": "q_funny_chaos_015", "packId": "funny_chaos", "textAr": "لا تلفّون… فيه واحد يطلب طلبه من المطعم بتفصيل ونبرة وكأنه يلقي خطاباً في مؤتمر صحفي مباشر", "textEn": "", "status": "active", "intensity": "light", "ageRating": "all" }
+]

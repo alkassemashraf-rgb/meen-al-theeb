@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../services/auth/auth_service.dart';
 import '../data/room_repository.dart';
+import '../../gameplay/domain/question_enums.dart';
 import '../../../shared/components/game_button.dart';
 import '../../../shared/components/page_container.dart';
 import '../../../shared/components/avatar_widget.dart';
@@ -43,19 +44,33 @@ class _JoinRoomScreenState extends ConsumerState<JoinRoomScreen> {
     try {
       final auth = ref.read(authServiceProvider);
       var user = ref.read(authStateProvider).value;
-      
+
       if (user == null) {
         user = (await auth.signInAnonymously()).user;
       }
 
       if (user != null && mounted) {
+        // Pre-join: check ageMode and show confirmation if mature
+        final ageMode = await ref
+            .read(roomRepositoryProvider)
+            .fetchRoomAgeModeByCode(code);
+
+        if (mounted &&
+            (ageMode == RoomAgeMode.plus18 || ageMode == RoomAgeMode.plus21)) {
+          final confirmed = await _showAgeConfirmationDialog(ageMode);
+          if (!mounted || confirmed != true) {
+            setState(() => _isLoading = false);
+            return;
+          }
+        }
+
         final roomId = await ref.read(roomRepositoryProvider).joinRoom(
           joinCode: code,
           playerId: user.uid,
           playerName: name,
           avatarId: _selectedAvatar,
         );
-        
+
         if (mounted) {
           context.go('/room/$roomId');
         }
@@ -71,9 +86,73 @@ class _JoinRoomScreenState extends ConsumerState<JoinRoomScreen> {
     }
   }
 
+  Future<bool?> _showAgeConfirmationDialog(String ageMode) {
+    final String ageBadge =
+        ageMode == RoomAgeMode.plus21 ? '🍺 21+' : '🔞 18+';
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF2D1B69),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          '$ageBadge هذه الغرفة للبالغين',
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'قد تحتوي هذه الغرفة على أسئلة جريئة أو للبالغين',
+              style: TextStyle(color: Colors.white70),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 6),
+            Text(
+              'This room may include mature or bold questions',
+              style: TextStyle(color: Colors.white54, fontSize: 12),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text(
+              'إلغاء',
+              style: TextStyle(color: Colors.red, fontSize: 16),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text(
+              'دخول',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return PageContainer(
+      backgroundGradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFF1A1330), Color(0xFF2D1B69)],
+      ),
       child: SingleChildScrollView(
         child: Column(
           children: [

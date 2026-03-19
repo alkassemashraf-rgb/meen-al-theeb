@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/game_session_repository.dart';
 import '../domain/game_round.dart';
-import '../domain/reaction.dart';
 import '../../room/data/room_repository.dart';
 
 final gameplayServiceProvider = Provider<GameplayService>((ref) {
@@ -87,6 +87,9 @@ class GameplayService {
 
   void _checkVotingProgress(String roomId, GameRound round) {
     if (round.eligiblePlayerIds.isEmpty) return;
+    print('[Mission8.8][CheckVoting] round=${round.roundId} '
+        'votes=${round.votes.length} eligible=${round.eligiblePlayerIds.length} '
+        'phase=${round.phase}');
     if (round.votes.length >= round.eligiblePlayerIds.length) {
       _lockRound(roomId, round);
     }
@@ -133,13 +136,28 @@ class GameplayService {
     _lockedRoundId = round.roundId;
     _roundTimeoutTimer?.cancel();
 
+    final trigger = round.votes.length >= round.eligiblePlayerIds.length
+        ? 'votes'
+        : 'timeout';
+    print('[Mission8.8][LockRound] round=${round.roundId} trigger=$trigger '
+        'votes=${round.votes.length} eligible=${round.eligiblePlayerIds.length} '
+        'voteMap=${round.votes}');
+    debugPrint('[GameplayService] Locking round ${round.roundId} '
+        'votes=${round.votes.length}/${round.eligiblePlayerIds.length}');
+
     try {
-      // MVP: host client writes vote_locked. Cloud Function resolveRound
-      // detects this change and takes over result computation + result_ready.
       await _roomRepo
           .roomRef(roomId)
           .child('currentRound/phase')
           .set('vote_locked');
+      // Pass in-memory round data so computeAndSetResult can use the votes
+      // already confirmed by the stream (vote-completion path) without re-reading
+      // from RTDB — eliminates the race where the last vote is still in-flight.
+      await _sessionRepo.computeAndSetResult(
+        roomId,
+        hintVotes: round.votes,
+        hintEligibleIds: round.eligiblePlayerIds,
+      );
     } finally {
       _isLockingRound = false;
     }
@@ -157,7 +175,8 @@ class GameplayService {
     );
   }
 
-  Stream<Reaction> observeReactions(String roomId) {
-    return _sessionRepo.observeReactions(roomId);
+  /// Streams the current round's reaction map: playerId → emoji.
+  Stream<Map<String, String>> observeReactionMap(String roomId) {
+    return _sessionRepo.observeReactionMap(roomId);
   }
 }

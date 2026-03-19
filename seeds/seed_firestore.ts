@@ -53,6 +53,10 @@ interface PackSeed {
   questionCount: number;
   icon: string;
   isPremium: boolean;
+  // Mission 3 optional fields — defaults applied in seedPacks()
+  minAgeRating?: string;
+  isEnabled?: boolean;
+  dominantIntensity?: string;
 }
 
 interface QuestionSeed {
@@ -60,7 +64,22 @@ interface QuestionSeed {
   packId: string;
   textAr: string;
   textEn: string;
+  // Mission 3 optional fields — defaults applied in seedQuestions()
+  status?: string;
+  intensity?: string;
+  ageRating?: string;
 }
+
+// ---------------------------------------------------------------------------
+// Feature flags
+// ---------------------------------------------------------------------------
+
+/**
+ * Set to true to delete ALL documents from the `questions` collection before
+ * seeding. This is a destructive, irreversible operation — use with care.
+ * Set to false to skip deletion and only write/overwrite documents.
+ */
+const RESET_QUESTIONS = true;
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -101,6 +120,35 @@ async function writeBatched(
 }
 
 // ---------------------------------------------------------------------------
+// Reset questions
+// ---------------------------------------------------------------------------
+
+/**
+ * Deletes every document in the `questions` collection using batches of 500.
+ * Idempotent: calling on an empty collection is a no-op.
+ */
+async function deleteAllQuestions(): Promise<void> {
+  console.log('\n── Resetting questions collection ──');
+  const collection = db.collection('questions');
+  const BATCH_SIZE = 500;
+  let totalDeleted = 0;
+
+  while (true) {
+    const snapshot = await collection.limit(BATCH_SIZE).get();
+    if (snapshot.empty) break;
+
+    const batch = db.batch();
+    snapshot.docs.forEach((doc) => batch.delete(doc.ref));
+    await batch.commit();
+
+    totalDeleted += snapshot.size;
+    console.log(`  ✓ Deleted ${totalDeleted} so far…`);
+  }
+
+  console.log(`Reset complete. Total questions deleted: ${totalDeleted}`);
+}
+
+// ---------------------------------------------------------------------------
 // Seed packs
 // ---------------------------------------------------------------------------
 
@@ -115,6 +163,10 @@ async function seedPacks(): Promise<void> {
       id,
       data: {
         ...data,
+        // Mission 3: pack-level metadata with safe defaults
+        minAgeRating: data.minAgeRating ?? 'all',
+        isEnabled: data.isEnabled ?? true,
+        dominantIntensity: data.dominantIntensity ?? 'medium',
         createdAt: FieldValue.serverTimestamp(),
       },
     };
@@ -134,7 +186,18 @@ async function seedQuestions(filename: string): Promise<number> {
 
   const docs = questions.map((q) => {
     const { id, ...data } = q;
-    return { id, data: data as Record<string, unknown> };
+    return {
+      id,
+      data: {
+        ...data,
+        // Mission 3: question-level metadata with safe defaults.
+        // Questions in JSON files that omit these fields get the same defaults
+        // as the Dart @Default() annotations in question.dart — staying in sync.
+        status: data.status ?? 'active',
+        intensity: data.intensity ?? 'medium',
+        ageRating: data.ageRating ?? 'all',
+      } as Record<string, unknown>,
+    };
   });
 
   return writeBatched(collection, docs);
@@ -145,9 +208,13 @@ async function seedAllQuestions(): Promise<void> {
 
   const files = [
     'questions_friends.json',
+    'questions_funny_chaos.json',
     'questions_embarrassing.json',
-    'questions_majlis.json',
+    'questions_savage.json',
+    'questions_deep_exposing.json',
+    'questions_majlis_gcc.json',
     'questions_couples.json',
+    'questions_age_21_plus.json',
   ];
 
   let total = 0;
@@ -168,6 +235,10 @@ async function seedAllQuestions(): Promise<void> {
 (async () => {
   try {
     console.log('Starting Firestore seed…');
+
+    if (RESET_QUESTIONS) {
+      await deleteAllQuestions();
+    }
 
     await seedPacks();
     await seedAllQuestions();

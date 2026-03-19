@@ -10,6 +10,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageContainer(
+      backgroundGradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFF1A1330), Color(0xFF2D1B69)],
+      ),
       child: Center(
         child: SingleChildScrollView(
           child: Column(

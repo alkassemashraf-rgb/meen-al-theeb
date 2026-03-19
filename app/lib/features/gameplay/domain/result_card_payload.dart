@@ -34,6 +34,10 @@ class ResultCardPayload {
   /// resultType: normal | tie | insufficient_votes
   final String resultType;
 
+  /// Optional category/tone label resolved from [CategoryRegistry].
+  /// Null when packId is unavailable on the round (current MVP limitation).
+  final String? categoryLabel;
+
   /// All eligible players for this round with their vote context.
   final List<ResultCardPlayerInfo> players;
 
@@ -47,6 +51,7 @@ class ResultCardPayload {
     required this.resultType,
     required this.players,
     required this.generatedAt,
+    this.categoryLabel,
   });
 
   /// Convenience: returns only the winning players.

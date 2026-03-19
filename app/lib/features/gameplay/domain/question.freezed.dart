@@ -15,7 +15,16 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Question {
 
- String get id; String get textAr; String get textEn; String get packId;
+ String get id; String get textAr; String get textEn; String get packId;// ── Added in Mission 3: Question Engine V2 ────────────────────────────
+/// Lifecycle status. Defaults to 'active' so existing Firestore docs
+/// without this field are treated as active (backward compatible).
+/// See [QuestionStatus] for valid values.
+ String get status;/// Content intensity level. Defaults to 'medium'.
+/// See [IntensityLevel] for valid values.
+ String get intensity;/// Audience age rating. Defaults to 'all' (no restriction).
+/// See [AgeRating] for valid values.
+ String get ageRating;/// Semantic version of the question text (for future re-seeding audits).
+ int get version;
 /// Create a copy of Question
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +37,16 @@ $QuestionCopyWith<Question> get copyWith => _$QuestionCopyWithImpl<Question>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Question&&(identical(other.id, id) || other.id == id)&&(identical(other.textAr, textAr) || other.textAr == textAr)&&(identical(other.textEn, textEn) || other.textEn == textEn)&&(identical(other.packId, packId) || other.packId == packId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Question&&(identical(other.id, id) || other.id == id)&&(identical(other.textAr, textAr) || other.textAr == textAr)&&(identical(other.textEn, textEn) || other.textEn == textEn)&&(identical(other.packId, packId) || other.packId == packId)&&(identical(other.status, status) || other.status == status)&&(identical(other.intensity, intensity) || other.intensity == intensity)&&(identical(other.ageRating, ageRating) || other.ageRating == ageRating)&&(identical(other.version, version) || other.version == version));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,textAr,textEn,packId);
+int get hashCode => Object.hash(runtimeType,id,textAr,textEn,packId,status,intensity,ageRating,version);
 
 @override
 String toString() {
-  return 'Question(id: $id, textAr: $textAr, textEn: $textEn, packId: $packId)';
+  return 'Question(id: $id, textAr: $textAr, textEn: $textEn, packId: $packId, status: $status, intensity: $intensity, ageRating: $ageRating, version: $version)';
 }
 
 
@@ -48,7 +57,7 @@ abstract mixin class $QuestionCopyWith<$Res>  {
   factory $QuestionCopyWith(Question value, $Res Function(Question) _then) = _$QuestionCopyWithImpl;
 @useResult
 $Res call({
- String id, String textAr, String textEn, String packId
+ String id, String textAr, String textEn, String packId, String status, String intensity, String ageRating, int version
 });
 
 
@@ -65,13 +74,17 @@ class _$QuestionCopyWithImpl<$Res>
 
 /// Create a copy of Question
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? textAr = null,Object? textEn = null,Object? packId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? textAr = null,Object? textEn = null,Object? packId = null,Object? status = null,Object? intensity = null,Object? ageRating = null,Object? version = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,textAr: null == textAr ? _self.textAr : textAr // ignore: cast_nullable_to_non_nullable
 as String,textEn: null == textEn ? _self.textEn : textEn // ignore: cast_nullable_to_non_nullable
 as String,packId: null == packId ? _self.packId : packId // ignore: cast_nullable_to_non_nullable
-as String,
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,intensity: null == intensity ? _self.intensity : intensity // ignore: cast_nullable_to_non_nullable
+as String,ageRating: null == ageRating ? _self.ageRating : ageRating // ignore: cast_nullable_to_non_nullable
+as String,version: null == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -156,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String textAr,  String textEn,  String packId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String textAr,  String textEn,  String packId,  String status,  String intensity,  String ageRating,  int version)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Question() when $default != null:
-return $default(_that.id,_that.textAr,_that.textEn,_that.packId);case _:
+return $default(_that.id,_that.textAr,_that.textEn,_that.packId,_that.status,_that.intensity,_that.ageRating,_that.version);case _:
   return orElse();
 
 }
@@ -177,10 +190,10 @@ return $default(_that.id,_that.textAr,_that.textEn,_that.packId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String textAr,  String textEn,  String packId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String textAr,  String textEn,  String packId,  String status,  String intensity,  String ageRating,  int version)  $default,) {final _that = this;
 switch (_that) {
 case _Question():
-return $default(_that.id,_that.textAr,_that.textEn,_that.packId);case _:
+return $default(_that.id,_that.textAr,_that.textEn,_that.packId,_that.status,_that.intensity,_that.ageRating,_that.version);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +210,10 @@ return $default(_that.id,_that.textAr,_that.textEn,_that.packId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String textAr,  String textEn,  String packId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String textAr,  String textEn,  String packId,  String status,  String intensity,  String ageRating,  int version)?  $default,) {final _that = this;
 switch (_that) {
 case _Question() when $default != null:
-return $default(_that.id,_that.textAr,_that.textEn,_that.packId);case _:
+return $default(_that.id,_that.textAr,_that.textEn,_that.packId,_that.status,_that.intensity,_that.ageRating,_that.version);case _:
   return null;
 
 }
@@ -212,13 +225,26 @@ return $default(_that.id,_that.textAr,_that.textEn,_that.packId);case _:
 @JsonSerializable()
 
 class _Question implements Question {
-  const _Question({required this.id, required this.textAr, required this.textEn, required this.packId});
+  const _Question({required this.id, required this.textAr, required this.textEn, required this.packId, this.status = 'active', this.intensity = 'medium', this.ageRating = 'all', this.version = 1});
   factory _Question.fromJson(Map<String, dynamic> json) => _$QuestionFromJson(json);
 
 @override final  String id;
 @override final  String textAr;
 @override final  String textEn;
 @override final  String packId;
+// ── Added in Mission 3: Question Engine V2 ────────────────────────────
+/// Lifecycle status. Defaults to 'active' so existing Firestore docs
+/// without this field are treated as active (backward compatible).
+/// See [QuestionStatus] for valid values.
+@override@JsonKey() final  String status;
+/// Content intensity level. Defaults to 'medium'.
+/// See [IntensityLevel] for valid values.
+@override@JsonKey() final  String intensity;
+/// Audience age rating. Defaults to 'all' (no restriction).
+/// See [AgeRating] for valid values.
+@override@JsonKey() final  String ageRating;
+/// Semantic version of the question text (for future re-seeding audits).
+@override@JsonKey() final  int version;
 
 /// Create a copy of Question
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +259,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Question&&(identical(other.id, id) || other.id == id)&&(identical(other.textAr, textAr) || other.textAr == textAr)&&(identical(other.textEn, textEn) || other.textEn == textEn)&&(identical(other.packId, packId) || other.packId == packId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Question&&(identical(other.id, id) || other.id == id)&&(identical(other.textAr, textAr) || other.textAr == textAr)&&(identical(other.textEn, textEn) || other.textEn == textEn)&&(identical(other.packId, packId) || other.packId == packId)&&(identical(other.status, status) || other.status == status)&&(identical(other.intensity, intensity) || other.intensity == intensity)&&(identical(other.ageRating, ageRating) || other.ageRating == ageRating)&&(identical(other.version, version) || other.version == version));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,textAr,textEn,packId);
+int get hashCode => Object.hash(runtimeType,id,textAr,textEn,packId,status,intensity,ageRating,version);
 
 @override
 String toString() {
-  return 'Question(id: $id, textAr: $textAr, textEn: $textEn, packId: $packId)';
+  return 'Question(id: $id, textAr: $textAr, textEn: $textEn, packId: $packId, status: $status, intensity: $intensity, ageRating: $ageRating, version: $version)';
 }
 
 
@@ -253,7 +279,7 @@ abstract mixin class _$QuestionCopyWith<$Res> implements $QuestionCopyWith<$Res>
   factory _$QuestionCopyWith(_Question value, $Res Function(_Question) _then) = __$QuestionCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String textAr, String textEn, String packId
+ String id, String textAr, String textEn, String packId, String status, String intensity, String ageRating, int version
 });
 
 
@@ -270,13 +296,17 @@ class __$QuestionCopyWithImpl<$Res>
 
 /// Create a copy of Question
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? textAr = null,Object? textEn = null,Object? packId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? textAr = null,Object? textEn = null,Object? packId = null,Object? status = null,Object? intensity = null,Object? ageRating = null,Object? version = null,}) {
   return _then(_Question(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,textAr: null == textAr ? _self.textAr : textAr // ignore: cast_nullable_to_non_nullable
 as String,textEn: null == textEn ? _self.textEn : textEn // ignore: cast_nullable_to_non_nullable
 as String,packId: null == packId ? _self.packId : packId // ignore: cast_nullable_to_non_nullable
-as String,
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,intensity: null == intensity ? _self.intensity : intensity // ignore: cast_nullable_to_non_nullable
+as String,ageRating: null == ageRating ? _self.ageRating : ageRating // ignore: cast_nullable_to_non_nullable
+as String,version: null == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

@@ -46,6 +46,9 @@ class SessionSummary {
   /// playerId → displayName, for resolving IDs in the UI.
   final Map<String, String> playerDisplayNames;
 
+  /// playerId → avatarId, for rendering avatars in the share card.
+  final Map<String, String> playerAvatarIds;
+
   final int totalRounds;
 
   /// Number of rounds with resultType == 'insufficient_votes'.
@@ -58,6 +61,10 @@ class SessionSummary {
   /// Null if no votes were cast across the session.
   final String? mostVotedPlayerId;
 
+  /// All playerIds tied for the most total votes. Used for the final wolf
+  /// reveal: if multiple players are tied, they are all wolves.
+  final List<String> mostVotedPlayerIds;
+
   /// Total votes received by [mostVotedPlayerId].
   final int mostVotedCount;
 
@@ -65,16 +72,26 @@ class SessionSummary {
     required this.rounds,
     required this.totalVotesReceived,
     required this.playerDisplayNames,
+    this.playerAvatarIds = const {},
     required this.totalRounds,
     required this.skippedRounds,
     required this.tieRounds,
     this.mostVotedPlayerId,
+    this.mostVotedPlayerIds = const [],
     required this.mostVotedCount,
   });
 
   /// Resolved display name of the most-voted player, if any.
   String? get mostVotedDisplayName =>
       mostVotedPlayerId != null ? playerDisplayNames[mostVotedPlayerId] : null;
+
+  /// Resolved display names of all tied wolves.
+  List<String> get mostVotedDisplayNames => mostVotedPlayerIds
+      .map((id) => playerDisplayNames[id] ?? 'لاعب')
+      .toList();
+
+  /// True when more than one player is tied for most votes.
+  bool get isSessionTie => mostVotedPlayerIds.length > 1;
 
   bool get hasAnyRounds => rounds.isNotEmpty;
 }
