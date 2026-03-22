@@ -15,8 +15,14 @@ service cloud.firestore {
       allow write: if false; // System/Admin only
     }
 
-    // Questions (Static game content inside packs)
+    // Questions (Static game content inside packs) — legacy collection
     match /questions/{questionId} {
+      allow read: if true;
+      allow write: if false; // System/Admin only
+    }
+
+    // Question bank (Mission 13+ collection used by the app and seed scripts)
+    match /question_bank/{questionId} {
       allow read: if true;
       allow write: if false; // System/Admin only
     }

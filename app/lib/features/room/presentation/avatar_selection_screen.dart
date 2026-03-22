@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/components/page_container.dart';
 import '../../../shared/components/avatar_widget.dart';
-import '../../../shared/components/avatar_asset.dart'; // For registry access
 import '../../../shared/components/game_button.dart';
-import '../../../core/theme/app_colors.dart';
 
 class AvatarSelectionScreen extends ConsumerStatefulWidget {
   final String? initialAvatarId;
@@ -31,10 +29,15 @@ class _AvatarSelectionScreenState extends ConsumerState<AvatarSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final avatarIds = avatarRegistry.keys.toList();
+    final avatarIds = List.generate(24, (i) => 'avatar_${i + 1}');
 
     return PageContainer(
       title: 'اختر شخصيتك',
+      backgroundGradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFF1A1330), Color(0xFF2D1B69)],
+      ),
       child: Column(
         children: [
           const SizedBox(height: 24),

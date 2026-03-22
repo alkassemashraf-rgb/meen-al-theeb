@@ -3,8 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/session_summary_builder.dart';
+import '../data/game_session_repository.dart';
 import '../domain/session_summary.dart';
+import './final_share_card_widget.dart';
+import './gameplay_screen.dart' show roomStreamProvider;
+import '../../room/data/room_repository.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../services/auth/auth_service.dart';
 import '../../../shared/components/page_container.dart';
 import '../../../shared/utils/ui_helpers.dart';
 
@@ -54,7 +59,7 @@ class SessionSummaryScreen extends ConsumerWidget {
             ),
           );
         }
-        return _SummaryContent(summary: summary);
+        return _SummaryContent(summary: summary, roomId: roomId);
       },
     );
   }
@@ -64,20 +69,64 @@ class SessionSummaryScreen extends ConsumerWidget {
 // Main content
 // ---------------------------------------------------------------------------
 
-class _SummaryContent extends StatelessWidget {
+class _SummaryContent extends ConsumerStatefulWidget {
   final SessionSummary summary;
+  final String roomId;
 
-  const _SummaryContent({required this.summary});
+  const _SummaryContent({required this.summary, required this.roomId});
+
+  @override
+  ConsumerState<_SummaryContent> createState() => _SummaryContentState();
+}
+
+class _SummaryContentState extends ConsumerState<_SummaryContent> {
+  bool _isResetting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Non-host players auto-navigate when host triggers Play Again
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ref.listenManual(roomStreamProvider(widget.roomId), (_, next) {
+        if (next.valueOrNull?.status == 'gameplay' && mounted) {
+          context.go('/gameplay/${widget.roomId}');
+        }
+      });
+    });
+  }
+
+  Future<void> _onPlayAgain() async {
+    setState(() => _isResetting = true);
+    try {
+      await ref
+          .read(gameSessionRepositoryProvider)
+          .resetAndStartSession(widget.roomId);
+      if (mounted) context.go('/gameplay/${widget.roomId}');
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('خطأ في إعادة التشغيل: $e')),
+        );
+        setState(() => _isResetting = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = ref.watch(authStateProvider).value;
+    final roomAsync = ref.watch(roomStreamProvider(widget.roomId));
+    final isHost = roomAsync.valueOrNull?.hostId == currentUser?.uid;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: const Color(0xFF1A1330),
       appBar: AppBar(
-        title: const Text('ملخص الجلسة'),
-        backgroundColor: AppColors.background,
+        title: const Text('ملخص الجلسة', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF1A1330),
         elevation: 0,
         automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Column(
         children: [
@@ -86,13 +135,15 @@ class _SummaryContent extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
               children: [
                 const SizedBox(height: 8),
-                _StatsBar(summary: summary),
-                if (summary.mostVotedDisplayName != null) ...[
+                _StatsBar(summary: widget.summary),
+                if (widget.summary.mostVotedPlayerIds.isNotEmpty) ...[
                   const SizedBox(height: 16),
-                  _MostVotedCard(summary: summary),
+                  _WolfResultCard(summary: widget.summary),
+                  const SizedBox(height: 8),
+                  _ShareFinalButton(summary: widget.summary),
                 ],
                 const SizedBox(height: 24),
-                if (!summary.hasAnyRounds) ...[
+                if (!widget.summary.hasAnyRounds) ...[
                   const EmptyState(
                     title: 'لا توجد جولات',
                     message: 'يبدو أن هذه الجلسة لم تكتمل بعد.',
@@ -103,18 +154,23 @@ class _SummaryContent extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  ...summary.rounds.map((r) => _RoundRecapCard(recap: r)),
+                  ...widget.summary.rounds.map((r) => _RoundRecapCard(recap: r)),
                 ],
               ],
             ),
           ),
         ],
       ),
-      bottomNavigationBar: _HomeButton(),
+      bottomNavigationBar: _ReplayActionsBar(
+        isHost: isHost,
+        isResetting: _isResetting,
+        onPlayAgain: _onPlayAgain,
+        onNewGame: () => context.go('/home'),
+      ),
     );
   }
 }
@@ -165,7 +221,7 @@ class _StatsBar extends StatelessWidget {
   }
 
   Widget _divider() =>
-      Container(width: 1, height: 40, color: Colors.grey.shade200);
+      Container(width: 1, height: 40, color: Colors.white24);
 }
 
 class _StatItem extends StatelessWidget {
@@ -206,15 +262,29 @@ class _StatItem extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Most-voted highlight
+// Wolf result card — shows all players tied for most votes as "the wolf(ves)"
 // ---------------------------------------------------------------------------
 
-class _MostVotedCard extends StatelessWidget {
+class _WolfResultCard extends StatelessWidget {
   final SessionSummary summary;
-  const _MostVotedCard({required this.summary});
+  const _WolfResultCard({required this.summary});
 
   @override
   Widget build(BuildContext context) {
+    final isAllTied = summary.isSessionTie &&
+        summary.mostVotedPlayerIds.length ==
+            summary.playerDisplayNames.length;
+    final isTie = summary.isSessionTie;
+    final wolves = summary.mostVotedDisplayNames;
+
+    final String title = isAllTied
+        ? 'الجميع ذئاب! 🐺'
+        : isTie
+            ? 'الذئاب (تعادل) 🐺🐺'
+            : 'الذيب الحقيقي 🐺';
+
+    final String wolfNames = wolves.join(' و ');
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -234,38 +304,36 @@ class _MostVotedCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: Colors.white24,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.accent, width: 2),
-                ),
-                child: const Center(
-                  child: Text(
-                    '🏆',
-                    style: TextStyle(fontSize: 28),
-                  ),
-                ),
+          Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              color: Colors.white24,
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.accent, width: 2),
+            ),
+            child: Center(
+              child: Text(
+                isAllTied ? '🌕' : '🐺',
+                style: const TextStyle(fontSize: 28),
               ),
-            ],
+            ),
           ),
           const SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'نجم الجلسة (الأكثر تصويتاً)',
-                  style: TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w500),
+                Text(
+                  title,
+                  style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  summary.mostVotedDisplayName ?? 'غير متوفر',
+                  wolfNames,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -276,7 +344,8 @@ class _MostVotedCard extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
               color: Colors.black26,
               borderRadius: BorderRadius.circular(14),
@@ -463,33 +532,113 @@ class _ResultBadge extends StatelessWidget {
 // Standard helpers used above
 
 // ---------------------------------------------------------------------------
-// Sticky home button
+// Share final result button
 // ---------------------------------------------------------------------------
 
-class _HomeButton extends StatelessWidget {
+class _ShareFinalButton extends StatelessWidget {
+  final SessionSummary summary;
+  const _ShareFinalButton({required this.summary});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: () => showFinalShareCardSheet(context, summary),
+        icon: const Icon(Icons.share, color: Colors.white70),
+        label: const Text(
+          'شارك نتيجة الذيب',
+          style: TextStyle(color: Colors.white70),
+        ),
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: Colors.white24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 10),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Replay actions bar — Play Again (host only) + New Game (all players)
+// ---------------------------------------------------------------------------
+
+class _ReplayActionsBar extends StatelessWidget {
+  final bool isHost;
+  final bool isResetting;
+  final VoidCallback onPlayAgain;
+  final VoidCallback onNewGame;
+
+  const _ReplayActionsBar({
+    required this.isHost,
+    required this.isResetting,
+    required this.onPlayAgain,
+    required this.onNewGame,
+  });
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-        child: SizedBox(
-          width: double.infinity,
-          height: 52,
-          child: ElevatedButton.icon(
-            onPressed: () => context.go('/home'),
-            icon: const Icon(Icons.home_outlined),
-            label: const Text(
-              'الصفحة الرئيسية',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isHost) ...[
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton.icon(
+                  onPressed: isResetting ? null : onPlayAgain,
+                  icon: isResetting
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.black,
+                          ),
+                        )
+                      : const Icon(Icons.replay),
+                  label: Text(
+                    isResetting ? 'جاري الإعداد...' : 'العب مرة ثانية',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.accent,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton.icon(
+                onPressed: onNewGame,
+                icon: const Icon(Icons.home_outlined),
+                label: const Text(
+                  'لعبة جديدة',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

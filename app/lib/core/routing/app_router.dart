@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/test_backend/test_backend_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
@@ -8,6 +9,7 @@ import '../../features/room/presentation/lobby_screen.dart' as room_lobby;
 import '../../features/gameplay/presentation/gameplay_screen.dart';
 import '../../features/gameplay/presentation/session_summary_screen.dart';
 import '../../features/room/presentation/avatar_selection_screen.dart';
+import '../../features/splash/splash_screen.dart';
 
 // Placeholder Screens
 class PlaceholderScreen extends StatelessWidget {
@@ -24,8 +26,22 @@ class PlaceholderScreen extends StatelessWidget {
 }
 
 final appRouter = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/splash',
+  errorBuilder: (context, state) => Scaffold(
+    backgroundColor: const Color(0xFF1A1330),
+    body: Center(
+      child: Text(
+        'Navigation error:\n${state.error}',
+        style: const TextStyle(color: Colors.white, fontSize: 14),
+        textAlign: TextAlign.center,
+      ),
+    ),
+  ),
   routes: [
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
     GoRoute(
       path: '/test-backend',
       builder: (context, state) => const TestBackendScreen(),
@@ -48,7 +64,10 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/join-room',
-      builder: (context, state) => const JoinRoomScreen(),
+      builder: (context, state) {
+        final code = state.uri.queryParameters['code'];
+        return JoinRoomScreen(prefilledCode: code);
+      },
     ),
     GoRoute(
       path: '/room/:roomId',
@@ -84,4 +103,7 @@ final appRouter = GoRouter(
     ),
   ],
 );
+
+/// Exposes the GoRouter instance to Riverpod services (e.g. DeepLinkService).
+final routerProvider = Provider<GoRouter>((ref) => appRouter);
 

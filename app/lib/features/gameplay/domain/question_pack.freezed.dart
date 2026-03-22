@@ -15,7 +15,14 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$QuestionPack {
 
- String get packId; String get name; String get description; String get language; int get questionCount; String get icon; bool get isPremium; DateTime? get createdAt;
+ String get packId; String get name; String get description; String get language; int get questionCount; String get icon; bool get isPremium; DateTime? get createdAt;// ── Added in Mission 3: Question Engine V2 ────────────────────────────
+/// Whether this pack appears in the lobby. Allows soft-disabling packs
+/// without deleting them from Firestore. Defaults to true (backward compat).
+ bool get isEnabled;/// Minimum audience age rating for questions in this pack.
+/// Informational for lobby display. Defaults to 'all'.
+ String get minAgeRating;/// Dominant intensity level of questions in this pack.
+/// Informational for lobby display. Defaults to 'medium'.
+ String get dominantIntensity;
 /// Create a copy of QuestionPack
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +35,16 @@ $QuestionPackCopyWith<QuestionPack> get copyWith => _$QuestionPackCopyWithImpl<Q
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is QuestionPack&&(identical(other.packId, packId) || other.packId == packId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.language, language) || other.language == language)&&(identical(other.questionCount, questionCount) || other.questionCount == questionCount)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is QuestionPack&&(identical(other.packId, packId) || other.packId == packId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.language, language) || other.language == language)&&(identical(other.questionCount, questionCount) || other.questionCount == questionCount)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isEnabled, isEnabled) || other.isEnabled == isEnabled)&&(identical(other.minAgeRating, minAgeRating) || other.minAgeRating == minAgeRating)&&(identical(other.dominantIntensity, dominantIntensity) || other.dominantIntensity == dominantIntensity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,packId,name,description,language,questionCount,icon,isPremium,createdAt);
+int get hashCode => Object.hash(runtimeType,packId,name,description,language,questionCount,icon,isPremium,createdAt,isEnabled,minAgeRating,dominantIntensity);
 
 @override
 String toString() {
-  return 'QuestionPack(packId: $packId, name: $name, description: $description, language: $language, questionCount: $questionCount, icon: $icon, isPremium: $isPremium, createdAt: $createdAt)';
+  return 'QuestionPack(packId: $packId, name: $name, description: $description, language: $language, questionCount: $questionCount, icon: $icon, isPremium: $isPremium, createdAt: $createdAt, isEnabled: $isEnabled, minAgeRating: $minAgeRating, dominantIntensity: $dominantIntensity)';
 }
 
 
@@ -48,7 +55,7 @@ abstract mixin class $QuestionPackCopyWith<$Res>  {
   factory $QuestionPackCopyWith(QuestionPack value, $Res Function(QuestionPack) _then) = _$QuestionPackCopyWithImpl;
 @useResult
 $Res call({
- String packId, String name, String description, String language, int questionCount, String icon, bool isPremium, DateTime? createdAt
+ String packId, String name, String description, String language, int questionCount, String icon, bool isPremium, DateTime? createdAt, bool isEnabled, String minAgeRating, String dominantIntensity
 });
 
 
@@ -65,7 +72,7 @@ class _$QuestionPackCopyWithImpl<$Res>
 
 /// Create a copy of QuestionPack
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? packId = null,Object? name = null,Object? description = null,Object? language = null,Object? questionCount = null,Object? icon = null,Object? isPremium = null,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? packId = null,Object? name = null,Object? description = null,Object? language = null,Object? questionCount = null,Object? icon = null,Object? isPremium = null,Object? createdAt = freezed,Object? isEnabled = null,Object? minAgeRating = null,Object? dominantIntensity = null,}) {
   return _then(_self.copyWith(
 packId: null == packId ? _self.packId : packId // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -75,7 +82,10 @@ as String,questionCount: null == questionCount ? _self.questionCount : questionC
 as int,icon: null == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
 as String,isPremium: null == isPremium ? _self.isPremium : isPremium // ignore: cast_nullable_to_non_nullable
 as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,isEnabled: null == isEnabled ? _self.isEnabled : isEnabled // ignore: cast_nullable_to_non_nullable
+as bool,minAgeRating: null == minAgeRating ? _self.minAgeRating : minAgeRating // ignore: cast_nullable_to_non_nullable
+as String,dominantIntensity: null == dominantIntensity ? _self.dominantIntensity : dominantIntensity // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -160,10 +170,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String packId,  String name,  String description,  String language,  int questionCount,  String icon,  bool isPremium,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String packId,  String name,  String description,  String language,  int questionCount,  String icon,  bool isPremium,  DateTime? createdAt,  bool isEnabled,  String minAgeRating,  String dominantIntensity)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _QuestionPack() when $default != null:
-return $default(_that.packId,_that.name,_that.description,_that.language,_that.questionCount,_that.icon,_that.isPremium,_that.createdAt);case _:
+return $default(_that.packId,_that.name,_that.description,_that.language,_that.questionCount,_that.icon,_that.isPremium,_that.createdAt,_that.isEnabled,_that.minAgeRating,_that.dominantIntensity);case _:
   return orElse();
 
 }
@@ -181,10 +191,10 @@ return $default(_that.packId,_that.name,_that.description,_that.language,_that.q
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String packId,  String name,  String description,  String language,  int questionCount,  String icon,  bool isPremium,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String packId,  String name,  String description,  String language,  int questionCount,  String icon,  bool isPremium,  DateTime? createdAt,  bool isEnabled,  String minAgeRating,  String dominantIntensity)  $default,) {final _that = this;
 switch (_that) {
 case _QuestionPack():
-return $default(_that.packId,_that.name,_that.description,_that.language,_that.questionCount,_that.icon,_that.isPremium,_that.createdAt);case _:
+return $default(_that.packId,_that.name,_that.description,_that.language,_that.questionCount,_that.icon,_that.isPremium,_that.createdAt,_that.isEnabled,_that.minAgeRating,_that.dominantIntensity);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +211,10 @@ return $default(_that.packId,_that.name,_that.description,_that.language,_that.q
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String packId,  String name,  String description,  String language,  int questionCount,  String icon,  bool isPremium,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String packId,  String name,  String description,  String language,  int questionCount,  String icon,  bool isPremium,  DateTime? createdAt,  bool isEnabled,  String minAgeRating,  String dominantIntensity)?  $default,) {final _that = this;
 switch (_that) {
 case _QuestionPack() when $default != null:
-return $default(_that.packId,_that.name,_that.description,_that.language,_that.questionCount,_that.icon,_that.isPremium,_that.createdAt);case _:
+return $default(_that.packId,_that.name,_that.description,_that.language,_that.questionCount,_that.icon,_that.isPremium,_that.createdAt,_that.isEnabled,_that.minAgeRating,_that.dominantIntensity);case _:
   return null;
 
 }
@@ -216,7 +226,7 @@ return $default(_that.packId,_that.name,_that.description,_that.language,_that.q
 @JsonSerializable()
 
 class _QuestionPack implements QuestionPack {
-  const _QuestionPack({required this.packId, required this.name, this.description = '', this.language = 'ar', this.questionCount = 0, this.icon = '🐺', this.isPremium = false, this.createdAt});
+  const _QuestionPack({required this.packId, required this.name, this.description = '', this.language = 'ar', this.questionCount = 0, this.icon = '🐺', this.isPremium = false, this.createdAt, this.isEnabled = true, this.minAgeRating = 'all', this.dominantIntensity = 'medium'});
   factory _QuestionPack.fromJson(Map<String, dynamic> json) => _$QuestionPackFromJson(json);
 
 @override final  String packId;
@@ -227,6 +237,16 @@ class _QuestionPack implements QuestionPack {
 @override@JsonKey() final  String icon;
 @override@JsonKey() final  bool isPremium;
 @override final  DateTime? createdAt;
+// ── Added in Mission 3: Question Engine V2 ────────────────────────────
+/// Whether this pack appears in the lobby. Allows soft-disabling packs
+/// without deleting them from Firestore. Defaults to true (backward compat).
+@override@JsonKey() final  bool isEnabled;
+/// Minimum audience age rating for questions in this pack.
+/// Informational for lobby display. Defaults to 'all'.
+@override@JsonKey() final  String minAgeRating;
+/// Dominant intensity level of questions in this pack.
+/// Informational for lobby display. Defaults to 'medium'.
+@override@JsonKey() final  String dominantIntensity;
 
 /// Create a copy of QuestionPack
 /// with the given fields replaced by the non-null parameter values.
@@ -241,16 +261,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _QuestionPack&&(identical(other.packId, packId) || other.packId == packId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.language, language) || other.language == language)&&(identical(other.questionCount, questionCount) || other.questionCount == questionCount)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _QuestionPack&&(identical(other.packId, packId) || other.packId == packId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.language, language) || other.language == language)&&(identical(other.questionCount, questionCount) || other.questionCount == questionCount)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isEnabled, isEnabled) || other.isEnabled == isEnabled)&&(identical(other.minAgeRating, minAgeRating) || other.minAgeRating == minAgeRating)&&(identical(other.dominantIntensity, dominantIntensity) || other.dominantIntensity == dominantIntensity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,packId,name,description,language,questionCount,icon,isPremium,createdAt);
+int get hashCode => Object.hash(runtimeType,packId,name,description,language,questionCount,icon,isPremium,createdAt,isEnabled,minAgeRating,dominantIntensity);
 
 @override
 String toString() {
-  return 'QuestionPack(packId: $packId, name: $name, description: $description, language: $language, questionCount: $questionCount, icon: $icon, isPremium: $isPremium, createdAt: $createdAt)';
+  return 'QuestionPack(packId: $packId, name: $name, description: $description, language: $language, questionCount: $questionCount, icon: $icon, isPremium: $isPremium, createdAt: $createdAt, isEnabled: $isEnabled, minAgeRating: $minAgeRating, dominantIntensity: $dominantIntensity)';
 }
 
 
@@ -261,7 +281,7 @@ abstract mixin class _$QuestionPackCopyWith<$Res> implements $QuestionPackCopyWi
   factory _$QuestionPackCopyWith(_QuestionPack value, $Res Function(_QuestionPack) _then) = __$QuestionPackCopyWithImpl;
 @override @useResult
 $Res call({
- String packId, String name, String description, String language, int questionCount, String icon, bool isPremium, DateTime? createdAt
+ String packId, String name, String description, String language, int questionCount, String icon, bool isPremium, DateTime? createdAt, bool isEnabled, String minAgeRating, String dominantIntensity
 });
 
 
@@ -278,7 +298,7 @@ class __$QuestionPackCopyWithImpl<$Res>
 
 /// Create a copy of QuestionPack
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? packId = null,Object? name = null,Object? description = null,Object? language = null,Object? questionCount = null,Object? icon = null,Object? isPremium = null,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? packId = null,Object? name = null,Object? description = null,Object? language = null,Object? questionCount = null,Object? icon = null,Object? isPremium = null,Object? createdAt = freezed,Object? isEnabled = null,Object? minAgeRating = null,Object? dominantIntensity = null,}) {
   return _then(_QuestionPack(
 packId: null == packId ? _self.packId : packId // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -288,7 +308,10 @@ as String,questionCount: null == questionCount ? _self.questionCount : questionC
 as int,icon: null == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
 as String,isPremium: null == isPremium ? _self.isPremium : isPremium // ignore: cast_nullable_to_non_nullable
 as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,isEnabled: null == isEnabled ? _self.isEnabled : isEnabled // ignore: cast_nullable_to_non_nullable
+as bool,minAgeRating: null == minAgeRating ? _self.minAgeRating : minAgeRating // ignore: cast_nullable_to_non_nullable
+as String,dominantIntensity: null == dominantIntensity ? _self.dominantIntensity : dominantIntensity // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

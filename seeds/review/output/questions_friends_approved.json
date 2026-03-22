@@ -1,0 +1,20 @@
+[
+  {
+    "id": "rev_001_001",
+    "packId": "friends",
+    "textAr": "فيه واحد بيّن… كل جلسة تحسب حسابه يجيب وجع راسه وما في أحد يقول له اتوقف",
+    "textEn": "",
+    "intensity": "medium",
+    "ageRating": "all",
+    "status": "active"
+  },
+  {
+    "id": "rev_001_002",
+    "packId": "friends",
+    "textAr": "في شخص هنا… ما يشارك في التكاليف ودايم ينسى محفظته والكل يسامحه لأنه 'ما يعرف يقول لا'",
+    "textEn": "",
+    "intensity": "medium",
+    "ageRating": "all",
+    "status": "active"
+  }
+]

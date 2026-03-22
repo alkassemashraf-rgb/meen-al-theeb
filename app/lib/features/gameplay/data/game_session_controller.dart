@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../domain/category_registry.dart';
 import '../domain/game_round.dart';
 import '../domain/round_history_item.dart';
 import '../domain/result_card_payload.dart';
@@ -130,6 +131,10 @@ class GameSessionController
     final result = round.result;
     if (result == null) return; // Nothing to archive if result never computed
 
+    print('[Mission8.8][Archive] round=${round.roundId} '
+        'type=${result.resultType} totalValidVotes=${result.totalValidVotes} '
+        'voteCounts=${result.voteCounts} winners=${result.winningPlayerIds}');
+
     final historyItem = RoundHistoryItem(
       roundId: round.roundId,
       questionId: round.questionId,
@@ -177,12 +182,17 @@ class GameSessionController
         .whereType<ResultCardPlayerInfo>()
         .toList();
 
+    final categoryMeta = round.packId.isNotEmpty
+        ? CategoryRegistry.get(round.packId)
+        : null;
+
     return ResultCardPayload(
       roomId: roomId,
       roundId: round.roundId,
       questionAr: round.questionAr,
       questionEn: round.questionEn,
       resultType: result.resultType,
+      categoryLabel: categoryMeta?.labelAr,
       players: playerInfos,
       generatedAt: DateTime.now(),
     );
@@ -212,6 +222,19 @@ class GameSessionController
       // Stop the host-side gameplay watcher before writing ended status so no
       // stale timer callback can fire after the room is closed.
       _ref.read(gameplayServiceProvider).stopWatching();
+
+      // Archive the current round if it is in result_ready so its vote counts
+      // are included in the session summary's cumulative wolf calculation.
+      // This covers the case where the host ends the session directly from the
+      // reveal screen without clicking "Next Round" first.
+      try {
+        final currentRound = await _sessionRepo.fetchCurrentRound(roomId);
+        if (currentRound != null && currentRound.phase == 'result_ready') {
+          await _archiveRound(currentRound);
+        }
+      } catch (_) {
+        // Non-blocking: a failed archive must never prevent the session from ending.
+      }
 
       await _sessionRepo.endSession(roomId);
     } catch (e) {

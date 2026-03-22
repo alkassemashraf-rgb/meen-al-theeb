@@ -4,35 +4,95 @@
     "name": "أصدقاء",
     "description": "أسئلة خفيفة ومرحة مناسبة لأي مجموعة أصدقاء",
     "language": "ar",
-    "questionCount": 80,
-    "icon": "👫",
-    "isPremium": false
+    "questionCount": 95,
+    "icon": "👯",
+    "isPremium": false,
+    "isEnabled": true,
+    "minAgeRating": "all",
+    "dominantIntensity": "light"
+  },
+  {
+    "id": "funny_chaos",
+    "name": "فوضى مضحكة",
+    "description": "أسئلة سخيفة ومضحكة تجعل الجلسة فوضى",
+    "language": "ar",
+    "questionCount": 15,
+    "icon": "😂",
+    "isPremium": false,
+    "isEnabled": false,
+    "minAgeRating": "all",
+    "dominantIntensity": "light"
   },
   {
     "id": "embarrassing",
     "name": "محرج",
     "description": "أسئلة جريئة ومحرجة لمن يجرؤ على الإجابة",
     "language": "ar",
-    "questionCount": 60,
+    "questionCount": 75,
     "icon": "😬",
-    "isPremium": false
+    "isPremium": false,
+    "isEnabled": true,
+    "minAgeRating": "all",
+    "dominantIntensity": "medium"
   },
   {
-    "id": "majlis",
-    "name": "جلسة",
+    "id": "savage",
+    "name": "ساڤج",
+    "description": "أسئلة جريئة وحادة لمن يتحمل الصراحة",
+    "language": "ar",
+    "questionCount": 15,
+    "icon": "🔥",
+    "isPremium": false,
+    "isEnabled": false,
+    "minAgeRating": "all",
+    "dominantIntensity": "medium"
+  },
+  {
+    "id": "deep_exposing",
+    "name": "افضح",
+    "description": "أسئلة عميقة تكشف الحقيقي من الجميع",
+    "language": "ar",
+    "questionCount": 15,
+    "icon": "🕵️",
+    "isPremium": false,
+    "isEnabled": false,
+    "minAgeRating": "all",
+    "dominantIntensity": "medium"
+  },
+  {
+    "id": "majlis_gcc",
+    "name": "مجلس",
     "description": "أسئلة ثقافية واجتماعية بنكهة خليجية أصيلة",
     "language": "ar",
-    "questionCount": 70,
-    "icon": "🪑",
-    "isPremium": false
+    "questionCount": 85,
+    "icon": "🫖",
+    "isPremium": false,
+    "isEnabled": true,
+    "minAgeRating": "all",
+    "dominantIntensity": "light"
   },
   {
     "id": "couples",
     "name": "للأزواج",
     "description": "أسئلة رومانسية وخفيفة مخصصة للأزواج والمقربين",
     "language": "ar",
-    "questionCount": 50,
-    "icon": "💕",
-    "isPremium": false
+    "questionCount": 65,
+    "icon": "💑",
+    "isPremium": false,
+    "isEnabled": true,
+    "minAgeRating": "all",
+    "dominantIntensity": "medium"
+  },
+  {
+    "id": "age_21_plus",
+    "name": "٢١+",
+    "description": "أسئلة للبالغين فقط — ٢١ سنة فأكثر",
+    "language": "ar",
+    "questionCount": 15,
+    "icon": "🔞",
+    "isPremium": false,
+    "isEnabled": false,
+    "minAgeRating": "adult",
+    "dominantIntensity": "spicy"
   }
 ]

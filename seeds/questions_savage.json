@@ -1,0 +1,17 @@
+[
+  { "id": "q_savage_001", "packId": "savage", "textAr": "بدون لف ودوران… فيه واحد جملته المفضلة 'ما عندي مشكلة' وهو صاحب أكبر مشكلة في الغرفة", "textEn": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_002", "packId": "savage", "textAr": "خلونا نكون صريحين… فيه واحد يغيب عن كل تجمع ثم يتضايق لما ما أحد سأل عنه", "textEn": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_003", "packId": "savage", "textAr": "بدون لف ودوران… فيه واحد يدّعي إنه بخير وهو واضح للكل إنه مو بخير", "textEn": "", "status": "disabled", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_004", "packId": "savage", "textAr": "خلونا نكون صريحين… فيه واحد مكتبة نصائح ما طبّق منها شيء ويستشهد بها على الكل بثقة", "textEn": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_005", "packId": "savage", "textAr": "خلونا نكون صريحين… فيه واحد وجهه مبتسم لك وكلامه عنك مختلف لما تطيح", "textEn": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_006", "packId": "savage", "textAr": "لا تقولون لا… فيه واحد يتأخر دايماً ثم يدخل وكأن التأخر قرار اتخذه الكل معه", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_007", "packId": "savage", "textAr": "بدون لف ودوران… فيه واحد يستشير الكل في قراره ثم يتصرف عكس كل النصائح بدون تبرير", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_008", "packId": "savage", "textAr": "خلونا نكون صريحين… فيه واحد يبدأ كل قصة بـ'أنا مو متعلق' وهو واضح إنه لحد الآن ما رضى", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_009", "packId": "savage", "textAr": "بدون لف ودوران… فيه واحد يمثل الصمت بشكل مسرحي حتى يجيه أحد يسأل عنه بالاسم", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_010", "packId": "savage", "textAr": "لا تقولون لا… فيه واحد قصصه دايماً وهو البطل وما يصير إنه يكون بالغلط في أي رواية", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_011", "packId": "savage", "textAr": "خلونا نكون صريحين… فيه واحد يوافق الكل في الجلسة ثم يغير رأيه لما يخلو مع كل شخص لحاله", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_012", "packId": "savage", "textAr": "لا تقولون لا… فيه واحد يقول 'مو بمزاج' وبعدها لا يسكت إلا لما الجلسة تنتهي", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_013", "packId": "savage", "textAr": "بدون لف ودوران… فيه واحد يشتكي من أشياء يفعلها هو نفسه وما يربط بينها أبداً", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_014", "packId": "savage", "textAr": "خلونا نكون صريحين… فيه واحد يشيل هم مو حقه ثم يحكيه وكأنه الوحيد اللي يحمل ثقلاً حقيقياً", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_savage_015", "packId": "savage", "textAr": "لا تقولون لا… فيه واحد يتحول من 'أنا ما أهتم' إلى 'أنا أهتم جداً' في ثواني لما تمس موضوع معين", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" }
+]

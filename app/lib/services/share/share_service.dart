@@ -39,7 +39,16 @@ class ShareService {
     double pixelRatio = 3.0,
     String shareText = 'من الذيب في مجموعتنا؟ 🐺 #مين_الذيب',
     String fileName = 'meen_al_theeb_result.png',
+    Rect? sharePositionOrigin,
+    String? roomCode,
   }) async {
+    // If a room code is provided, override the share text with an invite link.
+    final effectiveText = roomCode != null
+        ? 'الذيب طلع في مجموعتنا 🐺 تعال العب معنا!\n'
+          'meenaltheeb://join?room=$roomCode\n'
+          '#مين_الذيب'
+        : shareText;
+
     // Allow one extra frame for any pending paint to complete
     await Future.delayed(const Duration(milliseconds: 20));
 
@@ -68,7 +77,8 @@ class ShareService {
     // Open native share sheet — ShareRequested event
     await Share.shareXFiles(
       [XFile(file.path, mimeType: 'image/png', name: fileName)],
-      text: shareText,
+      text: effectiveText,
+      sharePositionOrigin: sharePositionOrigin,
     );
   }
 

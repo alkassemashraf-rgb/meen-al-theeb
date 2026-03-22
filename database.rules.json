@@ -24,9 +24,6 @@
         },
 
         "currentRound": {
-          "result": {
-            ".write": false
-          },
           "votes": {
             "$voterId": {
               ".write": "auth != null && auth.uid == $voterId"

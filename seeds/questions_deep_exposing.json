@@ -1,0 +1,17 @@
+[
+  { "id": "q_deep_exposing_001", "packId": "deep_exposing", "textAr": "خلونا نقولها مثل ما هي… فيه واحد شايل شيء هالفترة وما عرض على أحد وما أحد سأل", "textEn": "", "status": "active", "intensity": "spicy", "ageRating": "all" },
+  { "id": "q_deep_exposing_002", "packId": "deep_exposing", "textAr": "بدون لف ودوران… فيه واحد يحتاج التشجيع أكثر من الكل لكنه لا يطلبه من أحد", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_deep_exposing_003", "packId": "deep_exposing", "textAr": "بدون لف ودوران… فيه واحد اللي تشوفه في الجلسة ونسخة منه مختلفة تماماً لما يخلو مع نفسه", "textEن": "", "status": "active", "intensity": "spicy", "ageRating": "all" },
+  { "id": "q_deep_exposing_004", "packId": "deep_exposing", "textAr": "خلونا نقولها مثل ما هي… فيه واحد يتظاهر إنه ما يأبه برأي الثاني وهو في حقيقته يهتم أكثر من أي أحد", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_deep_exposing_005", "packId": "deep_exposing", "textAr": "بدون لف ودوران… فيه واحد يعيش حياة ما خططها لنفسه ويعرف ذلك ولا يقوله لأحد", "textEن": "", "status": "disabled", "intensity": "spicy", "ageRating": "all" },
+  { "id": "q_deep_exposing_006", "packId": "deep_exposing", "textAr": "خلونا نقولها مثل ما هي… فيه واحد عنده حلم ما شاركه مع أحد في هالجلسة", "textEن": "", "status": "active", "intensity": "spicy", "ageRating": "all" },
+  { "id": "q_deep_exposing_007", "packId": "deep_exposing", "textAr": "بدون لف ودوران… فيه واحد يملأ كل صمت بكلام لأن الصمت يوترّه بشكل حقيقي", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_deep_exposing_008", "packId": "deep_exposing", "textAr": "خلونا نقولها مثل ما هي… فيه واحد تغيّر كثير خلال السنين الماضية لكنه لا يعترف بهذا أمام أحد", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_deep_exposing_009", "packId": "deep_exposing", "textAr": "خلونا نقولها مثل ما هي… فيه واحد وجهه مبتسم وكلامه خفيف وهو من الداخل يحتاج محادثة حقيقية", "textEن": "", "status": "active", "intensity": "spicy", "ageRating": "all" },
+  { "id": "q_deep_exposing_010", "packId": "deep_exposing", "textAr": "بدون لف ودوران… فيه واحد خيبة ظن أهله أكثر شيء يخيفه في الحياة وما يعترف بهذا", "textEن": "", "status": "active", "intensity": "spicy", "ageRating": "all" },
+  { "id": "q_deep_exposing_011", "packId": "deep_exposing", "textAr": "بدون لف ودوران… فيه واحد يجلس بين الكل ويضحك معهم وما يحس بوجوده أحد بالشكل اللي يحتاجه", "textEن": "", "status": "active", "intensity": "spicy", "ageRating": "all" },
+  { "id": "q_deep_exposing_012", "packId": "deep_exposing", "textAr": "خلونا نقولها مثل ما هي… فيه واحد يعرف إن علاقة في حياته تحتاج قرار لكنه يتأخر فيه عمداً", "textEن": "", "status": "active", "intensity": "spicy", "ageRating": "all" },
+  { "id": "q_deep_exposing_013", "packId": "deep_exposing", "textAr": "بدون لف ودوران… فيه واحد غيّر جزء من شخصيته عشان يشعر إنه يستاهل مكانه في هالمجموعة", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" },
+  { "id": "q_deep_exposing_014", "packId": "deep_exposing", "textAr": "خلونا نكون صريحين… فيه واحد لو قال اللي عنده الليلة بصراحة كاملة شيء بينه وبين أحد هنا راح يتغير", "textEن": "", "status": "active", "intensity": "spicy", "ageRating": "all" },
+  { "id": "q_deep_exposing_015", "packId": "deep_exposing", "textAr": "بدون لف ودوران… فيه واحد يتمنى يرجع لنسخة منه كان عليها في وقت ماضي ولا يعترف بهذا", "textEن": "", "status": "active", "intensity": "medium", "ageRating": "all" }
+]

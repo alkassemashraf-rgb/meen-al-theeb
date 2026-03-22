@@ -1,0 +1,138 @@
+[
+  {
+    "id": "rev_001_001",
+    "packId": "friends",
+    "textAr": "فيه واحد بيّن… كل جلسة تحسب حسابه يجيب وجع راسه وما في أحد يقول له اتوقف",
+    "textEn": "",
+    "intensity": "medium",
+    "ageRating": "all",
+    "reviewStatus": "approved",
+    "reviewNotes": "Specific, recognizable behavior. Strong social risk and sting. Natural Arabic phrasing.",
+    "scores": {
+      "specificity": 5,
+      "socialRisk": 4,
+      "recognitionSpeed": 5,
+      "emotionalSting": 4,
+      "replayValue": 4
+    }
+  },
+  {
+    "id": "rev_001_002",
+    "packId": "friends",
+    "textAr": "في شخص هنا… ما يشارك في التكاليف ودايم ينسى محفظته والكل يسامحه لأنه 'ما يعرف يقول لا'",
+    "textEn": "",
+    "intensity": "medium",
+    "ageRating": "all",
+    "reviewStatus": "approved",
+    "reviewNotes": "Classic group dynamic. High recognitionSpeed — room will laugh and look at someone immediately. Passes 4/5.",
+    "scores": {
+      "specificity": 5,
+      "socialRisk": 5,
+      "recognitionSpeed": 5,
+      "emotionalSting": 4,
+      "replayValue": 3
+    }
+  },
+  {
+    "id": "rev_001_003",
+    "packId": "savage",
+    "textAr": "فيه شخص ما يكمل شيء بدأه — لا مشاريع، لا خطط، لا وعود — لكنه دايم متحمس في البداية",
+    "textEn": "",
+    "intensity": "spicy",
+    "ageRating": "all",
+    "reviewStatus": "approved",
+    "reviewNotes": "Cuts deep. replayValue high because this describes someone in almost every group.",
+    "scores": {
+      "specificity": 4,
+      "socialRisk": 5,
+      "recognitionSpeed": 4,
+      "emotionalSting": 5,
+      "replayValue": 5
+    }
+  },
+  {
+    "id": "rev_001_004",
+    "packId": "embarrassing",
+    "textAr": "في شخص بيّن… حب يظهر أمام الناس بس لما تحتاجه بشكل حقيقي ما تلاقيه",
+    "textEn": "",
+    "intensity": "medium",
+    "ageRating": "all",
+    "reviewStatus": "needs_rewrite",
+    "reviewNotes": "Core concept is solid but phrasing is slightly vague ('يظهر أمام الناس' is too broad). Rewrite to target a specific behavior — e.g. the person who shows up for parties but not emergencies.",
+    "scores": {
+      "specificity": 2,
+      "socialRisk": 4,
+      "recognitionSpeed": 3,
+      "emotionalSting": 4,
+      "replayValue": 3
+    }
+  },
+  {
+    "id": "rev_001_005",
+    "packId": "friends",
+    "textAr": "الناس أحيانًا يتصرفون بطريقة غريبة ولا أحد يفهم ليش",
+    "textEn": "",
+    "intensity": "light",
+    "ageRating": "all",
+    "reviewStatus": "rejected",
+    "reviewNotes": "Fails checklist: too vague and universal — does not target a recognizable behavior. No social risk. No one will look at anyone. Not usable.",
+    "scores": {
+      "specificity": 1,
+      "socialRisk": 1,
+      "recognitionSpeed": 1,
+      "emotionalSting": 1,
+      "replayValue": 2
+    }
+  },
+  {
+    "id": "rev_001_006",
+    "packId": "deep_exposing",
+    "textAr": "فيه واحد ما يقدر يعترف بالغلط إلا لما يحس إن الكل عارف — وحتى وقتها بيلف",
+    "textEn": "",
+    "intensity": "spicy",
+    "ageRating": "all",
+    "reviewStatus": "approved",
+    "reviewNotes": "Precise, stings on multiple levels. The secondary clause ('وحتى وقتها بيلف') adds a layer that elevates this above generic.",
+    "scores": {
+      "specificity": 5,
+      "socialRisk": 5,
+      "recognitionSpeed": 4,
+      "emotionalSting": 5,
+      "replayValue": 4
+    }
+  },
+  {
+    "id": "rev_001_007",
+    "packId": "majlis_gcc",
+    "textAr": "في شخص دايم يحكي قصص من زمان بس ما عنده قصص جديدة",
+    "textEn": "",
+    "intensity": "light",
+    "ageRating": "all",
+    "reviewStatus": "rejected",
+    "reviewNotes": "Too soft and consequence-free. Being nostalgic is not social risk territory. Could work as a warm-up joke but not a 'Meen Al Theeb' prompt — no one will feel uncomfortable.",
+    "scores": {
+      "specificity": 2,
+      "socialRisk": 1,
+      "recognitionSpeed": 3,
+      "emotionalSting": 1,
+      "replayValue": 2
+    }
+  },
+  {
+    "id": "rev_001_008",
+    "packId": "couples",
+    "textAr": "في طرف ما يقول شنو يبغا بس يزعل لما ما تخمّن صح",
+    "textEn": "",
+    "intensity": "medium",
+    "ageRating": "all",
+    "reviewStatus": "draft",
+    "reviewNotes": "",
+    "scores": {
+      "specificity": 0,
+      "socialRisk": 0,
+      "recognitionSpeed": 0,
+      "emotionalSting": 0,
+      "replayValue": 0
+    }
+  }
+]

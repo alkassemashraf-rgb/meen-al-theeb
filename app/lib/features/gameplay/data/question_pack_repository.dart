@@ -10,11 +10,18 @@ final questionPackRepositoryProvider = Provider<QuestionPackRepository>((ref) =>
 final allPacksProvider = FutureProvider<List<QuestionPack>>((ref) =>
     ref.read(questionPackRepositoryProvider).fetchAllPacks());
 
-/// Host's selected pack in the lobby. `null` means no explicit selection —
-/// [GameSessionRepository.startGame] falls back to [getDefaultPackId].
+/// Host's selected pack in the lobby (legacy single-select, kept for compat).
 /// Scoped per roomId to match existing `.family` provider patterns.
 final selectedPackProvider =
     StateProvider.family<String?, String>((ref, roomId) => null);
+
+/// Host's selected pack IDs for multiselect. Empty list = use default pack.
+final selectedPackIdsProvider =
+    StateProvider.family<List<String>, String>((ref, roomId) => []);
+
+/// Host's selected round count. Defaults to 7.
+final selectedRoundCountProvider =
+    StateProvider.family<int, String>((ref, roomId) => 7);
 
 class QuestionPackRepository {
   final FirebaseFirestore _firestore;

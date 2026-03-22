@@ -8,6 +8,15 @@ final roomRepositoryProvider = Provider<RoomRepository>((ref) {
   return RoomRepository(FirebaseDatabase.instance);
 });
 
+/// Firebase RTDB returns Map<Object?, Object?> for nested maps.
+/// This recursively converts to Map<String, dynamic> for json_serializable.
+Map<String, dynamic> _deepConvert(Object? value) {
+  if (value is Map) {
+    return value.map((k, v) => MapEntry(k.toString(), v is Map ? _deepConvert(v) : v));
+  }
+  return {};
+}
+
 class RoomRepository {
   final FirebaseDatabase _db;
 
@@ -43,7 +52,10 @@ class RoomRepository {
       players: {hostId: hostPlayer},
     );
 
-    await roomRef(roomId).set(room.toJson());
+    // room.toJson() leaves players as RoomPlayer objects; serialize them explicitly
+    final roomJson = room.toJson();
+    roomJson['players'] = room.players.map((k, v) => MapEntry(k, v.toJson()));
+    await roomRef(roomId).set(roomJson);
     
     // Create an index for querying by join code
     await _db.ref('room_codes/$joinCode').set(roomId);
@@ -74,23 +86,23 @@ class RoomRepository {
       throw Exception('Room data corrupted or deleted');
     }
     
-    final roomMap = Map<String, dynamic>.from(roomSnapshot.value as Map);
+    final roomMap = _deepConvert(roomSnapshot.value);
     if (roomMap['status'] != 'lobby') {
       throw Exception('Room has already started');
     }
-    
+
     // Check player limit (MVP: 8 players)
-    final playersMap = roomMap['players'] != null 
-        ? Map<String, dynamic>.from(roomMap['players'] as Map) 
-        : {};
-    
+    final playersMap = roomMap['players'] != null
+        ? _deepConvert(roomMap['players'])
+        : <String, dynamic>{};
+
     if (playersMap.length >= 8 && !playersMap.containsKey(playerId)) {
       throw Exception('Room is full (max 8 players)');
     }
 
     // Check for duplicate names (excluding self if reconnecting)
     final existingNames = playersMap.values
-        .map((p) => Map<String, dynamic>.from(p as Map)['displayName'] as String)
+        .map((p) => _deepConvert(p)['displayName'] as String)
         .toList();
     
     if (existingNames.contains(playerName) && !playersMap.containsKey(playerId)) {
@@ -117,8 +129,8 @@ class RoomRepository {
     
     if (!roomSnapshot.exists) return;
     
-    final roomMap = Map<String, dynamic>.from(roomSnapshot.value as Map);
-    
+    final roomMap = _deepConvert(roomSnapshot.value);
+
     if (roomMap['hostId'] == playerId) {
       // Host left, end the room
       await rRef.child('status').set('ended');
@@ -137,9 +149,33 @@ class RoomRepository {
   Stream<Room?> observeRoom(String roomId) {
     return roomRef(roomId).onValue.map((event) {
       if (event.snapshot.exists) {
-         return Room.fromJson(Map<String, dynamic>.from(event.snapshot.value as Map));
+         return Room.fromJson(_deepConvert(event.snapshot.value));
       }
       return null;
     });
+  }
+
+  /// Persists the host's age mode selection so all lobby members can see it
+  Future<void> updateRoomAgeMode(String roomId, String ageMode) async {
+    await roomRef(roomId).child('ageMode').set(ageMode);
+  }
+
+  /// Streams the current ageMode for a room (defaults to 'standard' if unset)
+  Stream<String> observeRoomAgeMode(String roomId) {
+    return roomRef(roomId).child('ageMode').onValue.map((event) {
+      if (!event.snapshot.exists) return 'standard';
+      return event.snapshot.value as String? ?? 'standard';
+    });
+  }
+
+  /// Fetches the ageMode of a room by its join code (used for pre-join check)
+  Future<String> fetchRoomAgeModeByCode(String joinCode) async {
+    final codeSnapshot =
+        await _db.ref('room_codes/${joinCode.toUpperCase()}').get();
+    if (!codeSnapshot.exists) return 'standard';
+    final roomId = codeSnapshot.value as String;
+    final ageModeSnapshot = await roomRef(roomId).child('ageMode').get();
+    if (!ageModeSnapshot.exists) return 'standard';
+    return ageModeSnapshot.value as String? ?? 'standard';
   }
 }
